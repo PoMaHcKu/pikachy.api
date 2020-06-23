@@ -26,15 +26,15 @@ public class Post {
     private List<Section> sections;
     @OneToMany(mappedBy = "post")
     private List<Commentary> commentaries;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "post_tag",
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private List<Tag> tags;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "post_genre",
             joinColumns = @JoinColumn(name = "post_id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id"))
+            inverseJoinColumns = @JoinColumn(name = "gene_id"))
     private List<Genre> genres;
 
     public Post() {
