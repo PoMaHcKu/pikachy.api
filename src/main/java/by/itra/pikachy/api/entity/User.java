@@ -2,6 +2,7 @@ package by.itra.pikachy.api.entity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,7 +20,7 @@ public class User {
     private String password;
     @Column(name = "created", nullable = false, updatable = false)
     private LocalDateTime created;
-    @Column(name = "last_login", unique = true, nullable = false)
+    @Column(name = "last_login")
     private LocalDateTime lastLogin;
     @Column(name = "enabled")
     private boolean enabled;
@@ -34,6 +35,12 @@ public class User {
     private List<Role> roles;
     @Column(name = "token")
     private String verificationToken;
+
+    public User() {
+        this.roles = new ArrayList<>();
+        this.posts = new ArrayList<>();
+        this.created = LocalDateTime.now();
+    }
 
     public int getId() {
         return id;

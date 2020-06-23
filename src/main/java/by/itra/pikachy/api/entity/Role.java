@@ -1,6 +1,7 @@
 package by.itra.pikachy.api.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,6 +15,10 @@ public class Role {
     private String roleName;
     @ManyToMany(mappedBy = "roles")
     private List<User> users;
+
+    public Role() {
+        this.users = new ArrayList<>();
+    }
 
     public int getId() {
         return id;
@@ -29,5 +34,13 @@ public class Role {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }
