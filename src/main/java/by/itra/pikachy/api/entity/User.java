@@ -1,6 +1,7 @@
 package by.itra.pikachy.api.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "usr")
 @Data
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -22,26 +24,20 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
     @Column(name = "created", nullable = false, updatable = false)
-    private LocalDateTime created;
+    private LocalDateTime created = LocalDateTime.now();
     @Column(name = "last_login")
     private LocalDateTime lastLogin;
     @Column(name = "enabled")
     private boolean enabled;
     @OneToMany(mappedBy = "user")
-    private List<Post> posts;
+    private List<Post> posts  = new ArrayList<>();
     @ManyToMany(mappedBy = "users")
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private List<Role> roles;
+    private List<Role> roles = new ArrayList<>();
     @Column(name = "token")
     private String verificationToken;
-
-    public User() {
-        this.roles = new ArrayList<>();
-        this.posts = new ArrayList<>();
-        this.created = LocalDateTime.now();
-    }
 }
