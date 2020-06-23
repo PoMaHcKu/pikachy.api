@@ -29,7 +29,7 @@ public class User {
     private boolean enabled;
     @OneToMany(mappedBy = "user")
     private List<Post> posts;
-    @ManyToMany
+    @ManyToMany(mappedBy = "users")
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
