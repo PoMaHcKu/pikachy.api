@@ -37,11 +37,15 @@ public class UserService {
 
     private String generateToken() {
         byte[] bytes = new SecureRandom().generateSeed(16);
-        StringBuilder result = new StringBuilder();
-        for (byte aByte : bytes) {
-            result.append(result.charAt(aByte));
+        return bytesToHex(bytes);
+    }
+
+    private String bytesToHex(byte[] bytes) {
+        StringBuilder hexString = new StringBuilder();
+        for (byte b: bytes) {
+            hexString.append(Integer.toHexString(0xFF & b));
         }
-        return result.toString();
+        return hexString.toString();
     }
 
     public User updateUser(User user) {
