@@ -1,29 +1,44 @@
 package by.itra.pikachy.api.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "post")
+@Data
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "title", nullable = false)
+    private String title;
+    @Column(name = "description")
+    private String description;
+    @Column(name = "mark")
+    private byte mark;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-    public int getId() {
-        return id;
-    }
+    @OneToMany(mappedBy = "post")
+    private List<Section> sections;
+    @OneToMany(mappedBy = "post")
+    private List<Commentary> commentaries;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "post_tag",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private List<Tag> tags;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "post_genre",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id"))
+    private List<Genre> genres;
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public User getUserId() {
-        return user;
-    }
-
-    public void setUserId(User user) {
-        this.user = user;
+    public Post() {
+        this.tags = new ArrayList<>();
+        this.genres = new ArrayList<>();
     }
 }

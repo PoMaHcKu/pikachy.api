@@ -1,4 +1,4 @@
-package by.itra.pikachy.api.mail;
+package by.itra.pikachy.api.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,9 +9,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailService {
 
-    private JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
     @Value("${mail.subject}")
     private String mailSubject;
+
+    @Autowired
+    public EmailService(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
 
     public void sendSimpleMessage(String recipient, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
@@ -20,10 +25,5 @@ public class EmailService {
         message.setSubject(mailSubject);
         message.setText(text);
         mailSender.send(message);
-    }
-
-    @Autowired
-    public void setMailSender(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
     }
 }

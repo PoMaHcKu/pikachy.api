@@ -5,33 +5,64 @@ import by.itra.pikachy.api.entity.User;
 import by.itra.pikachy.api.repository.RoleRepository;
 import by.itra.pikachy.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.security.SecureRandom;
-import java.util.List;
 
 @Service
 public class UserService {
 
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
+    @Value("${mail.text}")
+    private String textMessage;
+    @Value("${app.address}")
+    private String appAddress;
     private final String USER_ROLE = "USER_ROLE";
+
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public UserService(UserRepository userRepository,
+                       RoleRepository roleRepository,
+                       PasswordEncoder passwordEncoder,
+                       EmailService emailService) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
+    }
 
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
+    @Transactional
     public User created(User user) {
         Role userRole = roleRepository.findByRoleName(USER_ROLE);
         user.getRoles().add(userRole);
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setVerificationToken(generateToken());
+
+        User registeredUser = userRepository.save(user);
+        emailService.sendSimpleMessage(
+                user.getEmail(),
+                getTextMessage(registeredUser.getVerificationToken()));
+        return userRepository.save(user);
+    }
+
+    @Transactional
+    public User verifyAndCleanToken(String token) {
+        User user = userRepository.findByVerificationToken(token);
+        if (user == null) {
+            return null;
+        }
+        user.setEnabled(true);
+        user.setVerificationToken("");
         return userRepository.save(user);
     }
 
@@ -42,24 +73,17 @@ public class UserService {
 
     private String bytesToHex(byte[] bytes) {
         StringBuilder hexString = new StringBuilder();
-        for (byte b: bytes) {
+        for (byte b : bytes) {
             hexString.append(Integer.toHexString(0xFF & b));
         }
         return hexString.toString();
     }
 
-    public User updateUser(User user) {
-        return userRepository.save(user);
+    private String getTextMessage(String token) {
+        return textMessage + "\n" + getConfirmLink(token);
     }
 
-    public User verifyToken(String token) {
-        User user = userRepository.findByVerificationToken(token);
-        if (user == null) {
-            throw new UsernameNotFoundException("This token isn't exist.");
-        }
-        user.setEnabled(true);
-        user.setVerificationToken("");
-        return userRepository.save(user);
+    private String getConfirmLink(String token) {
+        return appAddress + token;
     }
-
 }
