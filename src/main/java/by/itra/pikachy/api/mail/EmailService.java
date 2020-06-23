@@ -15,14 +15,11 @@ public class EmailService {
 
     public void sendSimpleMessage(String recipient, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("noreply@gmail.com");
         message.setTo(recipient);
         message.setSubject(mailSubject);
         message.setText(text);
         mailSender.send(message);
-    }
-
-    public JavaMailSender getMailSender() {
-        return mailSender;
     }
 
     @Autowired
