@@ -1,7 +1,9 @@
 package by.itra.pikachy.api.service;
 
+import by.itra.pikachy.api.dto.UserDto;
 import by.itra.pikachy.api.entity.Role;
 import by.itra.pikachy.api.entity.User;
+import by.itra.pikachy.api.mapper.UserMapper;
 import by.itra.pikachy.api.repository.RoleRepository;
 import by.itra.pikachy.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +21,11 @@ public class UserService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final String USER_ROLE = "USER_ROLE";
     @Value("${mail.text}")
     private String textMessage;
     @Value("${app.address}")
     private String appAddress;
-    private final String USER_ROLE = "USER_ROLE";
 
     @Autowired
     public UserService(UserRepository userRepository,
@@ -36,34 +38,32 @@ public class UserService {
         this.emailService = emailService;
     }
 
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public UserDto findByUsername(String username) {
+        return UserMapper.USER_MAPPER.fromUser(userRepository.findByUsername(username));
     }
 
     @Transactional
-    public User created(User user) {
+    public UserDto created(User user) {
         Role userRole = roleRepository.findByRoleName(USER_ROLE);
         user.getRoles().add(userRole);
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setVerificationToken(generateToken());
-
         User registeredUser = userRepository.save(user);
         emailService.sendSimpleMessage(
                 user.getEmail(),
                 getTextMessage(registeredUser.getVerificationToken()));
-        return userRepository.save(user);
+        return UserMapper.USER_MAPPER.fromUser(userRepository.save(user));
     }
 
     @Transactional
-    public User verifyAndCleanToken(String token) {
+    public UserDto verifyAndCleanToken(String token) {
         User user = userRepository.findByVerificationToken(token);
         if (user == null) {
             return null;
         }
         user.setEnabled(true);
         user.setVerificationToken("");
-        return userRepository.save(user);
+        return UserMapper.USER_MAPPER.fromUser(userRepository.save(user));
     }
 
     private String generateToken() {

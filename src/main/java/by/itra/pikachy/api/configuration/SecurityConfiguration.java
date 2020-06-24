@@ -15,7 +15,6 @@ import java.util.Collections;
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -26,9 +25,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable().cors()
                 .and()
-                .authorizeRequests().mvcMatchers("/login", "/posts", "/registration/**").permitAll()
-                .mvcMatchers("/admin").hasRole("ADMIN-ROLE")
-                .anyRequest().hasRole("USER-ROLE")
+                .authorizeRequests().mvcMatchers("/login", "/posts", "/registration/**", "/search").permitAll()
+                .mvcMatchers("/admin").hasAnyRole("ADMIN")
+                .anyRequest().hasRole("USER")
                 .and()
                 .httpBasic();
     }

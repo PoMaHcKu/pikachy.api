@@ -1,5 +1,6 @@
 package by.itra.pikachy.api.controller;
 
+import by.itra.pikachy.api.dto.UserDto;
 import by.itra.pikachy.api.entity.User;
 import by.itra.pikachy.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,13 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public boolean registration(@RequestBody User user) {
-        return userService.created(user) != null;
+    public UserDto registration(@RequestBody User user) {
+        return userService.created(user);
     }
 
 
     @GetMapping("{token}")
-    public boolean confirmRegistration(@PathVariable String token) {
-       return userService.verifyAndCleanToken(token) != null;
+    public UserDto confirmRegistration(@PathVariable String token) {
+       return userService.verifyAndCleanToken(token);
     }
 }
