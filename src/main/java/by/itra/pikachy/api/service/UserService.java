@@ -43,7 +43,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto created(User user) {
+    public User created(User user) {
         Role userRole = roleRepository.findByRoleName(USER_ROLE);
         user.getRoles().add(userRole);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -52,18 +52,18 @@ public class UserService {
         emailService.sendSimpleMessage(
                 user.getEmail(),
                 getTextMessage(registeredUser.getVerificationToken()));
-        return UserMapper.USER_MAPPER.fromUser(userRepository.save(user));
+        return userRepository.save(user);
     }
 
     @Transactional
-    public UserDto verifyAndCleanToken(String token) {
+    public User verifyAndCleanToken(String token) {
         User user = userRepository.findByVerificationToken(token);
         if (user == null) {
             return null;
         }
         user.setEnabled(true);
         user.setVerificationToken("");
-        return UserMapper.USER_MAPPER.fromUser(userRepository.save(user));
+        return userRepository.save(user);
     }
 
     private String generateToken() {

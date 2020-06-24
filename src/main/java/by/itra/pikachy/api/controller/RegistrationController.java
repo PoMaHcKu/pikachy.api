@@ -17,13 +17,13 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public UserDto registration(@RequestBody User user) {
-        return userService.created(user);
+    public boolean registration(@RequestBody User user) {
+        return userService.created(user) != null;
     }
 
 
     @GetMapping("{token}")
-    public UserDto confirmRegistration(@PathVariable String token) {
-       return userService.verifyAndCleanToken(token);
+    public boolean confirmRegistration(@PathVariable String token) {
+       return userService.verifyAndCleanToken(token) != null;
     }
 }
