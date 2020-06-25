@@ -10,6 +10,7 @@ import java.util.List;
 @Component
 public class UserDetailsImpl implements UserDetails {
 
+    private int id;
     private String username;
     private String password;
     private List<GrantedAuthority> roles;
@@ -48,6 +49,14 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setUsername(String username) {
