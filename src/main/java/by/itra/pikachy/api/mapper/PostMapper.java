@@ -1,15 +1,24 @@
 package by.itra.pikachy.api.mapper;
 
 import by.itra.pikachy.api.dto.PostDto;
+import by.itra.pikachy.api.entity.Genre;
 import by.itra.pikachy.api.entity.Post;
-import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface PostMapper {
-    PostMapper POST_MAPPER = Mappers.getMapper(PostMapper.class);
-    PostDto fromPost(Post post);
-    @InheritInverseConfiguration
-    Post toPost(PostDto postDto);
+
+    PostDto toDto(Post post);
+
+    Post toEntity(PostDto postDto);
+
+    default Genre toEntity(String genreName) {
+        Genre genre = new Genre();
+        genre.setGenreName(genreName);
+        return genre;
+    }
+
+    default String toDto(Genre genre) {
+        return genre.getGenreName();
+    }
 }

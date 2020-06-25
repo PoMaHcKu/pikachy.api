@@ -1,17 +1,19 @@
 package by.itra.pikachy.api.mapper;
 
 import by.itra.pikachy.api.dto.CommentaryDto;
-import by.itra.pikachy.api.dto.PostDto;
 import by.itra.pikachy.api.entity.Commentary;
-import by.itra.pikachy.api.entity.Post;
-import org.mapstruct.InheritInverseConfiguration;
+import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
-@Mapper
+@Mapper(uses = PostMapper.class)
 public interface CommentaryMapper {
-    CommentaryMapper COMMENTARY_MAPPER = Mappers.getMapper(CommentaryMapper.class);
+    @Mappings({
+            @Mapping(target = "created", source = "created", dateFormat = "hh:mm dd.MM.yy"),
+    })
     CommentaryDto fromCommentary(Commentary commentary);
-    @InheritInverseConfiguration
+
+    @IterableMapping(dateFormat = "hh:mm dd.MM.yyyy")
     Commentary toCommentary(CommentaryDto commentaryDto);
 }

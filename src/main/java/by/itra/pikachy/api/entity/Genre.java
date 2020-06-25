@@ -14,7 +14,7 @@ public class Genre {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "genre_name")
-    private String genre;
+    private String genreName;
     @ManyToMany(mappedBy = "genres")
     private List<Post> posts = new ArrayList<>();
 }

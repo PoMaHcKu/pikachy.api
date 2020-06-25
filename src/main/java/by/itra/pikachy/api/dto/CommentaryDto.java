@@ -1,10 +1,11 @@
 package by.itra.pikachy.api.dto;
 
-import by.itra.pikachy.api.entity.Post;
 import lombok.Data;
 
 @Data
 public class CommentaryDto {
     private int id;
-    private Post post;
+    private String textCommentary;
+    private PostDto post;
+    private String created;
 }

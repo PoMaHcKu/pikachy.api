@@ -38,8 +38,8 @@ public class UserService {
         this.emailService = emailService;
     }
 
-    public UserDto findByUsername(String username) {
-        return UserMapper.USER_MAPPER.fromUser(userRepository.findByUsername(username));
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
     @Transactional

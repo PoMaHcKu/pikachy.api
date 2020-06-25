@@ -8,8 +8,6 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper
 public interface SectionMapper {
-    SectionMapper SECTION_MAPPER = Mappers.getMapper(SectionMapper.class);
     SectionDto fromSection(Section section);
-    @InheritInverseConfiguration
     Section toSection(SectionDto sectionDto);
 }

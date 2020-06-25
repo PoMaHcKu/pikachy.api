@@ -13,6 +13,6 @@ public class UserDto {
     private String created;
     private String lastLogin;
     private boolean enabled;
-    private List<PostDto> posts;
+    private List<PostDto> posts = new ArrayList<>();
     private List<String> roles = new ArrayList<>();
 }

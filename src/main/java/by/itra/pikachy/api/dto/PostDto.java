@@ -14,6 +14,5 @@ public class PostDto {
     private User user;
     private List<SectionDto> sections;
     private List<CommentaryDto> commentaries;
-    private List<String> tags;
     private List<String> genres;
 }
