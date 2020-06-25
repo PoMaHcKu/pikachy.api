@@ -3,7 +3,6 @@ package by.itra.pikachy.api.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "section")

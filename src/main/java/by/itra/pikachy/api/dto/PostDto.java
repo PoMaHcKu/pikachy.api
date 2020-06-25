@@ -1,6 +1,6 @@
 package by.itra.pikachy.api.dto;
 
-import by.itra.pikachy.api.entity.Commentary;
+import by.itra.pikachy.api.entity.*;
 import lombok.Data;
 
 import java.util.List;
@@ -11,9 +11,9 @@ public class PostDto {
     private String title;
     private String description;
     private int mark;
-    private int user_id;
+    private User user;
     private List<SectionDto> sections;
+    private List<CommentaryDto> commentaries;
     private List<String> tags;
     private List<String> genres;
-    private List<CommentaryDto> commentaries;
 }

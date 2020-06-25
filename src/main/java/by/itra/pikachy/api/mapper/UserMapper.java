@@ -2,14 +2,18 @@ package by.itra.pikachy.api.mapper;
 
 import by.itra.pikachy.api.dto.UserDto;
 import by.itra.pikachy.api.entity.User;
-import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface UserMapper {
-    UserMapper USER_MAPPER = Mappers.getMapper(UserMapper.class);
-    UserDto fromUser(User user);
-    @InheritInverseConfiguration
-    User toUser(UserDto userDto);
+    @Mappings({
+            @Mapping(target = "id", source = "dto.id"),
+            @Mapping(target = "username", source = "dto.username"),
+            @Mapping(target = "email", source = "dto.email"),
+            @Mapping(target = "id", source = "dto.id")
+    })
+    User toEntity(UserDto dto);
+    UserDto toDto(User model);
 }
