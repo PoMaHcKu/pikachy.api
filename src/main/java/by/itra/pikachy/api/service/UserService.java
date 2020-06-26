@@ -50,8 +50,7 @@ public class UserService {
 
     @Transactional
     public UserDto created(User user) {
-        Role userRole = roleRepository.findByRoleName(USER_ROLE);
-        user.getRoles().add(userRole);
+        user.getRoles().add(roleRepository.findByRoleName(USER_ROLE));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setVerificationToken(generateToken());
         sendTokenOnEmail(userRepository.save(user));
@@ -68,6 +67,10 @@ public class UserService {
         user.setEnabled(true);
         user.setVerificationToken("");
         return userMapper.toDto(userRepository.save(user));
+    }
+
+    public UserDto authenticate(User user) {
+        return userMapper.toDto(user);
     }
 
     private String generateToken() {

@@ -2,6 +2,7 @@ package by.itra.pikachy.api.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,9 +27,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable().cors()
                 .and()
                 .authorizeRequests()
-                .mvcMatchers("/posts").permitAll()
+                .mvcMatchers(HttpMethod.GET, "/posts").permitAll()
                 .mvcMatchers("/login", "/registration/**", "/search").permitAll()
-                .mvcMatchers("/admin").hasAnyRole("ADMIN")
+                .mvcMatchers("/admin/**").hasAnyRole("ADMIN")
                 .anyRequest().hasRole("USER")
                 .and()
                 .httpBasic();
