@@ -69,10 +69,6 @@ public class UserService {
         return userMapper.toDto(userRepository.save(user));
     }
 
-    public UserDto authenticate(User user) {
-        return userMapper.toDto(user);
-    }
-
     private String generateToken() {
         byte[] bytes = new SecureRandom().generateSeed(16);
         return bytesToHex(bytes);
