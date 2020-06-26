@@ -25,7 +25,7 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
     @Column(name = "created", nullable = false, updatable = false)
-    private LocalDateTime created = LocalDateTime.now(ZoneId.of("UTC+3"));
+    private LocalDateTime created;
     @Column(name = "last_login")
     private LocalDateTime lastLogin;
     @Column(name = "enabled")

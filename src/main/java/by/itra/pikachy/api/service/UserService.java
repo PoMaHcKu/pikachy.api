@@ -6,6 +6,7 @@ import by.itra.pikachy.api.entity.User;
 import by.itra.pikachy.api.mapper.UserMapper;
 import by.itra.pikachy.api.repository.RoleRepository;
 import by.itra.pikachy.api.repository.UserRepository;
+import by.itra.pikachy.api.util.GetDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContext;
@@ -54,6 +55,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setVerificationToken(generateToken());
         sendTokenOnEmail(userRepository.save(user));
+        user.setCreated(GetDate.getLocalDate());
         return userMapper.toDto(userRepository.save(user));
     }
 
