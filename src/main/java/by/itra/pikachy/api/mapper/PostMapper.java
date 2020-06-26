@@ -5,7 +5,7 @@ import by.itra.pikachy.api.entity.Genre;
 import by.itra.pikachy.api.entity.Post;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {CommentaryMapper.class, UserMapper.class})
 public interface PostMapper {
 
     PostDto toDto(Post post);
