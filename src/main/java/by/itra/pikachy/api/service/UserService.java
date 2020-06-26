@@ -1,7 +1,6 @@
 package by.itra.pikachy.api.service;
 
 import by.itra.pikachy.api.dto.UserDto;
-import by.itra.pikachy.api.entity.Role;
 import by.itra.pikachy.api.entity.User;
 import by.itra.pikachy.api.mapper.UserMapper;
 import by.itra.pikachy.api.repository.RoleRepository;
@@ -10,6 +9,7 @@ import by.itra.pikachy.api.util.GetDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -72,6 +72,10 @@ public class UserService {
     private String generateToken() {
         byte[] bytes = new SecureRandom().generateSeed(16);
         return bytesToHex(bytes);
+    }
+
+    public UserDto signIn() {
+        return userMapper.toDto(getAuthenticatedUser(SecurityContextHolder.getContext()));
     }
 
     public User getAuthenticatedUser(SecurityContext context) {
