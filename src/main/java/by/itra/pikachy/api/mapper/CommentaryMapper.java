@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
-@Mapper(uses = PostMapper.class)
+@Mapper(uses = {PostMapper.class, UserMapper.class}, componentModel = "spring")
 public interface CommentaryMapper {
     @Mappings({
             @Mapping(target = "created", source = "created", dateFormat = "hh:mm dd.MM.yy"),
