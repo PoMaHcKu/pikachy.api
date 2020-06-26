@@ -8,6 +8,8 @@ import by.itra.pikachy.api.repository.RoleRepository;
 import by.itra.pikachy.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -51,10 +53,7 @@ public class UserService {
         user.getRoles().add(userRole);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setVerificationToken(generateToken());
-        User registeredUser = userRepository.save(user);
-        emailService.sendSimpleMessage(
-                user.getEmail(),
-                getTextMessage(registeredUser.getVerificationToken()));
+        sendTokenOnEmail(userRepository.save(user));
         return userMapper.toDto(userRepository.save(user));
     }
 
@@ -74,6 +73,11 @@ public class UserService {
         return bytesToHex(bytes);
     }
 
+    public User getAuthenticatedUser(SecurityContext context) {
+        UserDetails userDetails = (UserDetails) context.getAuthentication().getPrincipal();
+        return userRepository.findByUsername(userDetails.getUsername());
+    }
+
     private String bytesToHex(byte[] bytes) {
         StringBuilder hexString = new StringBuilder();
         for (byte b : bytes) {
@@ -88,5 +92,11 @@ public class UserService {
 
     private String getConfirmLink(String token) {
         return appAddress + token;
+    }
+
+    private void sendTokenOnEmail(User user) {
+        emailService.sendSimpleMessage(
+                user.getEmail(),
+                getTextMessage(user.getVerificationToken()));
     }
 }

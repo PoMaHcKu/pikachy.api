@@ -22,4 +22,13 @@ public class Role {
     public Role() {
         this.users = new ArrayList<>();
     }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", roleName='" + roleName + '\'' +
+                ", users=" + users.stream().map(User::getId) +
+                '}';
+    }
 }
