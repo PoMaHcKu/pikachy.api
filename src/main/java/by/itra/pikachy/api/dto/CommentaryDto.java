@@ -8,4 +8,5 @@ public class CommentaryDto {
     private String textCommentary;
     private PostDto post;
     private String created;
+    private UserDto user;
 }

@@ -19,4 +19,7 @@ public class Commentary {
     @ManyToOne(targetEntity = Post.class)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "author_id", nullable = false)
+    private User user;
 }
