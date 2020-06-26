@@ -35,7 +35,7 @@ public class RegistrationController {
        return userService.verifyAndCleanToken(token);
     }
 
-    @GetMapping("login")
+    @GetMapping("/login")
     public UserDto getAuthenticate(@AuthenticationPrincipal User user) {
         return userService.authenticate(user);
     }
