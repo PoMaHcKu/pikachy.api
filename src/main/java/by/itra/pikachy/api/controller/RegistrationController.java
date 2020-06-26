@@ -4,8 +4,14 @@ import by.itra.pikachy.api.dto.UserDto;
 import by.itra.pikachy.api.entity.User;
 import by.itra.pikachy.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/registration")
@@ -34,7 +40,9 @@ public class RegistrationController {
         return userService.authenticate(user);
     }
     @GetMapping("/logout")
-    public void deleteAuthentication() {
-
+    public void deleteAuthentication(Authentication authentication, HttpServletRequest request, HttpServletResponse response) {
+        if (authentication != null) {
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
+        }
     }
 }
