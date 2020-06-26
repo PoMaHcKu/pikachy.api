@@ -21,7 +21,8 @@ public class UserService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
-    private final String USER_ROLE = "USER_ROLE";
+    private final UserMapper userMapper;
+    private final String USER_ROLE = "ROLE_USER";
     @Value("${mail.text}")
     private String textMessage;
     @Value("${app.address}")
@@ -31,11 +32,13 @@ public class UserService {
     public UserService(UserRepository userRepository,
                        RoleRepository roleRepository,
                        PasswordEncoder passwordEncoder,
-                       EmailService emailService) {
+                       EmailService emailService,
+                       UserMapper userMapper) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
+        this.userMapper = userMapper;
     }
 
     public User findByUsername(String username) {
@@ -43,7 +46,7 @@ public class UserService {
     }
 
     @Transactional
-    public User created(User user) {
+    public UserDto created(User user) {
         Role userRole = roleRepository.findByRoleName(USER_ROLE);
         user.getRoles().add(userRole);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -52,18 +55,18 @@ public class UserService {
         emailService.sendSimpleMessage(
                 user.getEmail(),
                 getTextMessage(registeredUser.getVerificationToken()));
-        return userRepository.save(user);
+        return userMapper.toDto(userRepository.save(user));
     }
 
     @Transactional
-    public User verifyAndCleanToken(String token) {
+    public UserDto verifyAndCleanToken(String token) {
         User user = userRepository.findByVerificationToken(token);
         if (user == null) {
             return null;
         }
         user.setEnabled(true);
         user.setVerificationToken("");
-        return userRepository.save(user);
+        return userMapper.toDto(userRepository.save(user));
     }
 
     private String generateToken() {

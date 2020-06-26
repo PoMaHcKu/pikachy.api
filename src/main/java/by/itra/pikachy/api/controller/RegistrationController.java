@@ -11,19 +11,20 @@ import org.springframework.web.bind.annotation.*;
 public class RegistrationController {
     private final UserService userService;
 
+
     @Autowired
     public RegistrationController(UserService userService) {
         this.userService = userService;
     }
 
     @PostMapping
-    public boolean registration(@RequestBody User user) {
-        return userService.created(user) != null;
+    public UserDto registration(@RequestBody User user) {
+        return userService.created(user);
     }
 
 
     @GetMapping("{token}")
-    public boolean confirmRegistration(@PathVariable String token) {
-       return userService.verifyAndCleanToken(token) != null;
+    public UserDto confirmRegistration(@PathVariable String token) {
+       return userService.verifyAndCleanToken(token);
     }
 }
