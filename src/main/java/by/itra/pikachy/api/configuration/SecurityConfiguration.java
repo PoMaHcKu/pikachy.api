@@ -32,7 +32,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/admin/**").hasAnyRole("ADMIN")
                 .anyRequest().hasRole("USER")
                 .and()
-                .httpBasic();
+                .httpBasic()
+                .and()
+                .logout().logoutUrl("/logout").invalidateHttpSession(true).deleteCookies("JSESSIONID");
     }
 
     @Bean
