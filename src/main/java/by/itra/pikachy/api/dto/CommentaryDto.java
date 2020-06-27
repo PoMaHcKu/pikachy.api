@@ -6,7 +6,7 @@ import lombok.Data;
 public class CommentaryDto {
     private int id;
     private String textCommentary;
-    private PostDto post;
+    private int post;
     private String created;
     private UserDto user;
 }

@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -18,20 +20,32 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @NotNull
     @Column(name = "username", unique = true, nullable = false)
     private String username;
+
+    @NotNull
+    @Email
     @Column(name = "email", unique = true, nullable = false)
     private String email;
+
+    @NotNull
     @Column(name = "password", nullable = false)
     private String password;
+
     @Column(name = "created", nullable = false, updatable = false)
     private LocalDateTime created = LocalDateTime.now(ZoneId.of("UTC-3"));
+
     @Column(name = "last_login")
     private LocalDateTime lastLogin;
+
     @Column(name = "enabled")
     private boolean enabled;
+
     @OneToMany(mappedBy = "user")
     private List<Post> posts  = new ArrayList<>();
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
@@ -39,6 +53,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<Role> roles = new ArrayList<>();
+
     @Column(name = "token")
     private String verificationToken;
 }

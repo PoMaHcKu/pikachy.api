@@ -69,6 +69,15 @@ public class UserService {
         return userMapper.toDto(userRepository.save(user));
     }
 
+    @Transactional
+    public UserDto getUserById(int userId) {
+        return userMapper.toDto(userRepository.getOne(userId));
+    }
+
+    public void deleteUser(int id) {
+        userRepository.deleteById(id);
+    }
+
     private String generateToken() {
         byte[] bytes = new SecureRandom().generateSeed(16);
         return bytesToHex(bytes);

@@ -29,7 +29,6 @@ public class Section {
     @Column(name = "count_like")
     private int countLike;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
