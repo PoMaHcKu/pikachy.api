@@ -6,6 +6,8 @@ import by.itra.pikachy.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 public class RegistrationController {
     private final UserService userService;
@@ -17,13 +19,13 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public UserDto registration(@RequestBody User user) {
+    public UserDto registration(@RequestBody @Valid User user) {
         return userService.created(user);
     }
 
     @GetMapping("/registration/{token}")
     public UserDto confirmRegistration(@PathVariable String token) {
-       return userService.verifyAndCleanToken(token);
+        return userService.verifyAndCleanToken(token);
     }
 
     @GetMapping("/sign-in")

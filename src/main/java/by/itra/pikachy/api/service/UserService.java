@@ -62,7 +62,7 @@ public class UserService {
     public UserDto verifyAndCleanToken(String token) {
         User user = userRepository.findByVerificationToken(token);
         if (user == null) {
-            return null;
+            throw new RuntimeException("Token: " + token + " not found.");
         }
         user.setEnabled(true);
         user.setVerificationToken("");
