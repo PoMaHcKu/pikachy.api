@@ -22,11 +22,11 @@ import java.util.Objects;
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers,
                                                                   HttpStatus status,
                                                                   WebRequest request) {
-        logger.warn("\nhandleMethodArgumentNotValid\n");
         List<String> errors = new ArrayList<>();
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
             errors.add(error.getField() + ": " + error.getDefaultMessage());
@@ -34,24 +34,19 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         for (ObjectError error : ex.getBindingResult().getGlobalErrors()) {
             errors.add(error.getObjectName() + ": " + error.getDefaultMessage());
         }
-        ApiError apiError =
-                new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
-        return handleExceptionInternal(
-                ex, apiError, headers, apiError.getStatus(), request);
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
+        return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
     }
 
-    @ExceptionHandler({ ConstraintViolationException.class })
+    @ExceptionHandler(value = {ConstraintViolationException.class})
     public ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException ex) {
-        logger.warn("\nhandleConstraintViolation\n");
         List<String> errors = new ArrayList<>();
         for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
             errors.add(violation.getRootBeanClass().getName() + " " +
                     violation.getPropertyPath() + ": " + violation.getMessage());
         }
-        ApiError apiError =
-                new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
-        return new ResponseEntity<>(
-                apiError, new HttpHeaders(), apiError.getStatus());
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
+        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
     @Override
@@ -64,18 +59,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         builder.append(
                 " method is not supported for this request. Supported methods are ");
         Objects.requireNonNull(ex.getSupportedHttpMethods()).forEach(t -> builder.append(t).append(" "));
-        ApiError apiError = new ApiError(HttpStatus.METHOD_NOT_ALLOWED,
-                ex.getLocalizedMessage(), builder.toString());
-        return new ResponseEntity<>(
-                apiError, new HttpHeaders(), apiError.getStatus());
+        ApiError apiError = new ApiError(HttpStatus.METHOD_NOT_ALLOWED, ex.getLocalizedMessage(), builder.toString());
+        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
-    @ExceptionHandler({ Exception.class })
+    @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<Object> handleAll(Exception ex) {
         ApiError apiError = new ApiError(
-                HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "error occurred");
-        return new ResponseEntity<>(
-                apiError, new HttpHeaders(), apiError.getStatus());
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                ex.getLocalizedMessage(),
+                "error occurred");
+        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
-
 }
