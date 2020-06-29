@@ -16,7 +16,7 @@ import java.util.List;
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private ApiError apiError;
+    private final ApiError apiError;
 
     @Autowired
     public RestExceptionHandler(ApiError apiError) {
@@ -24,11 +24,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = Exception.class)
-    protected ResponseEntity<Object> handleException(Exception ex,
-                                                     HttpHeaders headers,
-                                                     WebRequest request) {
+    protected ResponseEntity<ApiError> handleException(Exception ex,
+                                                       HttpStatus status) {
         apiError.setMessage(ex.getLocalizedMessage());
         apiError.getErrors().add(ex.getMessage());
-        return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
+        apiError.setStatus(status);
+        return new ResponseEntity<>(apiError, status);
     }
 }
