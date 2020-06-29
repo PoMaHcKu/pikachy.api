@@ -1,5 +1,6 @@
 package by.itra.pikachy.api.exception;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,18 +16,19 @@ import java.util.List;
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
+    private ApiError apiError;
+
+    @Autowired
+    public RestExceptionHandler(ApiError apiError) {
+        this.apiError = apiError;
+    }
+
     @ExceptionHandler(value = Exception.class)
-    protected ResponseEntity<Object> handleException(MethodArgumentNotValidException ex,
-                                                                  HttpHeaders headers,
-                                                                  WebRequest request) {
-        List<String> errors = new ArrayList<>();
-        ex.getBindingResult().getFieldErrors().forEach(err ->
-                errors.add(err.getField() + ":" + err.getDefaultMessage()));
-
-        ex.getBindingResult().getGlobalErrors().forEach(err ->
-                errors.add(err.getObjectName() + ": " + err.getDefaultMessage()));
-
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
+    protected ResponseEntity<Object> handleException(Exception ex,
+                                                     HttpHeaders headers,
+                                                     WebRequest request) {
+        apiError.setMessage(ex.getLocalizedMessage());
+        apiError.getErrors().add(ex.getMessage());
         return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
     }
 }
