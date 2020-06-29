@@ -6,8 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,11 +33,11 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "created", nullable = false, updatable = false)
-    private LocalDateTime created = LocalDateTime.now(ZoneId.of("UTC-3"));
+    @Column(name = "created", updatable = false)
+    private SimpleDateFormat created;
 
     @Column(name = "last_login")
-    private LocalDateTime lastLogin;
+    private SimpleDateFormat lastLogin;
 
     @Column(name = "enabled")
     private boolean enabled;

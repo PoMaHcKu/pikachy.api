@@ -8,8 +8,9 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring", uses = PostMapper.class)
 public interface UserMapper {
 
-    User toEntity(UserDto dto);
     UserDto toDto(User model);
+
+    User toEntity(UserDto dto);
 
     default String fromRole(Role role) {
         return role.getRoleName();
