@@ -16,8 +16,9 @@ import java.util.List;
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
-    protected ResponseEntity<Object> handleException(MethodArgumentNotValidException ex,
+    protected ResponseEntity<ApiError> handleException(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers,
+                                                                  HttpStatus status,
                                                                   WebRequest request) {
         List<String> errors = new ArrayList<>();
         ex.getBindingResult().getFieldErrors().forEach(err ->
@@ -27,7 +28,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 errors.add(err.getObjectName() + ": " + err.getDefaultMessage()));
 
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
-        return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
+        return new ResponseEntity<>(apiError, status);
     }
-
 }
