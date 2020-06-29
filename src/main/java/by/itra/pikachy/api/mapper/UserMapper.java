@@ -5,16 +5,19 @@ import by.itra.pikachy.api.entity.Role;
 import by.itra.pikachy.api.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring", uses = PostMapper.class)
 public interface UserMapper {
 
     String DATE_FORMAT = "HH:mm dd.MM.yyyy";
 
-    @Mapping(source = "created", target = "created", dateFormat = DATE_FORMAT)
+    @Mappings({
+            @Mapping(source = "created", target = "created", dateFormat = DATE_FORMAT),
+            @Mapping(source = "lastLogin", target = "lastLogin", dateFormat = DATE_FORMAT)
+    })
     UserDto toDto(User model);
 
-    @Mapping(source = "created", target = "created", dateFormat = DATE_FORMAT)
     User toEntity(UserDto dto);
 
     default String fromRole(Role role) {
