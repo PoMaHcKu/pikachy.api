@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "commentary")
@@ -21,7 +21,7 @@ public class Commentary {
     private String textCommentary;
 
     @Column(name = "created")
-    private SimpleDateFormat created;
+    private LocalDateTime created;
 
     @NotBlank
     @ManyToOne(targetEntity = Post.class)

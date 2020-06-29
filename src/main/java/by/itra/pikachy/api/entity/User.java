@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,10 +34,10 @@ public class User {
     private String password;
 
     @Column(name = "created", updatable = false)
-    private SimpleDateFormat created;
+    private LocalDateTime created;
 
     @Column(name = "last_login")
-    private SimpleDateFormat lastLogin;
+    private LocalDateTime lastLogin;
 
     @Column(name = "enabled")
     private boolean enabled;
