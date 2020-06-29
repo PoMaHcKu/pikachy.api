@@ -22,7 +22,6 @@ import java.util.Objects;
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
-    @ExceptionHandler(value = MethodArgumentNotValidException.class)
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers,
                                                                   HttpStatus status,
