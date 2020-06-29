@@ -92,6 +92,10 @@ public class UserService {
         return userRepository.findByUsername(userDetails.getUsername());
     }
 
+    public void update(User user) {
+        userRepository.save(user);
+    }
+
     private String bytesToHex(byte[] bytes) {
         StringBuilder hexString = new StringBuilder();
         for (byte b : bytes) {

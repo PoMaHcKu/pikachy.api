@@ -1,8 +1,8 @@
 package by.itra.pikachy.api.security;
 
 import by.itra.pikachy.api.entity.User;
-import by.itra.pikachy.api.mapper.UserMapper;
 import by.itra.pikachy.api.service.UserService;
+import by.itra.pikachy.api.util.GetDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,12 +12,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserDetailsServiceImpl(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userService.findByUsername(username);
+        if  (user == null) {
+            throw new UsernameNotFoundException("User with username: " + username + "not found.");
+        }
+        updateLastLogin(user);
         return UserDetailsFactory.createUserDetails(user);
+    }
+
+    private void updateLastLogin(User user) {
+        user.setLastLogin(GetDate.getLocalDate());
+        userService.update(user);
     }
 }
