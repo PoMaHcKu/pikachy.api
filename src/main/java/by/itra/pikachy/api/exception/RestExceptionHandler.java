@@ -64,6 +64,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<Object> handleAll(Exception ex) {
+        if (ex instanceof ConstraintViolationException) {
+            return handleConstraintViolation((ConstraintViolationException) ex);
+        }
         ApiError apiError = new ApiError(
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 ex.getLocalizedMessage(),
