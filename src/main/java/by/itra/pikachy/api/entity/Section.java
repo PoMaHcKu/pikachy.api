@@ -3,7 +3,7 @@ package by.itra.pikachy.api.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -14,7 +14,7 @@ public class Section {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotNull
+    @NotBlank
     @Size(max = 50)
     @Column(name = "title", nullable = false)
     private String title;

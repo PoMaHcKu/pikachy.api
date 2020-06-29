@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -21,16 +21,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotNull
+    @NotBlank
     @Column(name = "username", unique = true, nullable = false)
     private String username;
 
-    @NotNull
+    @NotBlank
     @Email
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @NotNull
+    @NotBlank
     @Column(name = "password", nullable = false)
     private String password;
 
