@@ -1,6 +1,7 @@
 package by.itra.pikachy.api.entity;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.List;
 @Entity
 @Table(name = "role")
 @Data
+@ToString(exclude = "users")
 public class Role {
 
     @Id
@@ -21,14 +23,5 @@ public class Role {
 
     public Role() {
         this.users = new ArrayList<>();
-    }
-
-    @Override
-    public String toString() {
-        return "Role{" +
-                "id=" + id +
-                ", roleName='" + roleName + '\'' +
-                ", users=" + users.stream().map(User::getId) +
-                '}';
     }
 }
