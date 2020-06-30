@@ -101,11 +101,12 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public Page<User> getPage(int numberPage, int size) {
+    public Page<UserDto> getPage(int numberPage, int size) {
         Pageable pageable = PageRequest.of(numberPage, size, Sort.by(
                 Sort.Order.desc("created"),
                 Sort.Order.asc("username")));
-        return userRepository.findAll(pageable);
+        return userRepository.findAll(pageable).map(userMapper::toDto);
+
     }
 
     private String bytesToHex(byte[] bytes) {

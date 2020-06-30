@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping
-    public Page<User> getUsersPage(@RequestParam int pageNumber, @RequestParam int size) {
+    public Page<UserDto> getUsersPage(@RequestParam int pageNumber, @RequestParam int size) {
         return userService.getPage(pageNumber, size);
     }
     
