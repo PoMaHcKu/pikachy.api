@@ -8,6 +8,10 @@ import by.itra.pikachy.api.repository.UserRepository;
 import by.itra.pikachy.api.util.GetDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.security.SecureRandom;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -94,6 +99,13 @@ public class UserService {
 
     public void update(User user) {
         userRepository.save(user);
+    }
+
+    public Page<User> getPage(int numberPage, int size) {
+        Pageable pageable = PageRequest.of(numberPage, size, Sort.by(
+                Sort.Order.desc("created"),
+                Sort.Order.asc("username")));
+        return userRepository.findAll(pageable);
     }
 
     private String bytesToHex(byte[] bytes) {

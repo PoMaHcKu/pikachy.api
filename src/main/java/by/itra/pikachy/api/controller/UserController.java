@@ -1,7 +1,9 @@
 package by.itra.pikachy.api.controller;
 
 import by.itra.pikachy.api.dto.UserDto;
+import by.itra.pikachy.api.entity.User;
 import by.itra.pikachy.api.service.UserService;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,6 +22,11 @@ public class UserController {
         return userService.getUserById(Integer.parseInt(id));
     }
 
+    @GetMapping
+    public Page<User> getUsersPage(@RequestParam int pageNumber, @RequestParam int size) {
+        return userService.getPage(pageNumber, size);
+    }
+    
     @DeleteMapping("{id}")
     public void delete(@PathVariable int id) {
         userService.deleteUser(id);
