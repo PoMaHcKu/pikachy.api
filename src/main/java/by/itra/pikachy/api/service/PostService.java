@@ -32,14 +32,18 @@ public class PostService {
         return postMapper.toDto(postRepository.save(post));
     }
 
-    public void update(PostDto postDto) {
+    public PostDto update(PostDto postDto) {
         //add setUpdated after adding updatedField in post;
-        postRepository.save(postMapper.toEntity(postDto));
+        return postMapper.toDto(postRepository.save(postMapper.toEntity(postDto)));
     }
 
     public Page<PostDto> getPosts(int page, int size, String sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, sort);
         return postRepository.findAll(pageable).map(postMapper::toDto);
+    }
+
+    public PostDto getPost(int id) {
+        return postMapper.toDto(postRepository.getOne(id));
     }
 
     public void delete(int id) {
