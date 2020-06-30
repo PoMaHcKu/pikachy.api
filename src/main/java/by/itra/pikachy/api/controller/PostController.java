@@ -34,8 +34,8 @@ public class PostController {
     }
 
     @PostMapping
-    public PostDto create(@AuthenticationPrincipal User user, @RequestBody @Valid PostDto postDto) {
-       return postService.create(postDto, user);
+    public PostDto create(@RequestBody @Valid PostDto postDto) {
+       return postService.create(postDto);
     }
 
     @PostMapping
