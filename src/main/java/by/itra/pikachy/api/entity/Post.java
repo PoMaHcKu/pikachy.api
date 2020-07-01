@@ -7,7 +7,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "post")
@@ -40,7 +42,7 @@ public class Post {
     private User author;
 
     @OneToMany(mappedBy = "post")
-    private List<Section> sections;
+    private Set<Section> sections;
 
     @OneToMany(mappedBy = "post")
     private List<Commentary> commentaries;
@@ -52,6 +54,8 @@ public class Post {
     private List<Genre> genres;
 
     public Post() {
+        this.sections = new HashSet<>();
+        this.commentaries = new ArrayList<>();
         this.genres = new ArrayList<>();
     }
 }
