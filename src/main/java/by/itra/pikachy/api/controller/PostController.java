@@ -36,9 +36,8 @@ public class PostController {
        return postService.create(postDto);
     }
 
-    @PostMapping
-    public PostDto update(@Valid @RequestBody PostDto postDto) {
+    @PutMapping
+    public PostDto update(@RequestBody @Valid PostDto postDto) {
         return postService.update(postDto);
     }
-
 }
