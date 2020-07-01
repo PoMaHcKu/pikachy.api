@@ -29,6 +29,9 @@ public class Section {
     @Column(name = "count_like")
     private int countLike;
 
+    @Column(name = "place_number")
+    private int placeNumber;
+
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;

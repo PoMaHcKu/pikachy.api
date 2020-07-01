@@ -8,4 +8,5 @@ public class SectionDto {
     private String title;
     private int countLike;
     private int post;
+    private int placeNumber;
 }

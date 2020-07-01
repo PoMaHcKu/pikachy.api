@@ -2,8 +2,7 @@ package by.itra.pikachy.api.dto;
 
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Data
 public class PostDto {
@@ -14,7 +13,7 @@ public class PostDto {
     private int author;
     private String created;
     private String updated;
-    private List<SectionDto> sections = new ArrayList<>();
+    private Set<SectionDto> sections = new TreeSet<>(Comparator.comparing(SectionDto::getPlaceNumber));
     private List<CommentaryDto> commentaries = new ArrayList<>();
     private List<String> genres = new ArrayList<>();
 }
