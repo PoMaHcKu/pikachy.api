@@ -28,7 +28,7 @@ public class PostService {
 
     public PostDto create(PostDto postDto) {
         Post post = postMapper.toEntity(postDto);
-        post.setUser(userService.getAuthenticatedUser(SecurityContextHolder.getContext()));
+        post.setAuthor(userService.getAuthenticatedUser(SecurityContextHolder.getContext()));
         post.setMark(0);
         //add setCreated after adding created field in post;
         return postMapper.toDto(postRepository.save(post));
