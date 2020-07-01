@@ -42,7 +42,7 @@ public class User {
     @Column(name = "enabled")
     private boolean enabled;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "author")
     private List<Post> posts  = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER)

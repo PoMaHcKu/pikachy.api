@@ -28,9 +28,9 @@ public class Post {
     @Column(name = "mark")
     private int mark;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private User author;
 
     @OneToMany(mappedBy = "post")
     private List<Section> sections;
