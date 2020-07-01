@@ -1,7 +1,7 @@
 package by.itra.pikachy.api.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -9,8 +9,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "section")
-@Setter
-@Getter
+@Data
 public class Section {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +33,8 @@ public class Section {
     @Column(name = "place_number")
     private int placeNumber;
 
-    @ManyToOne(targetEntity = Post.class)
+    @ToString.Exclude
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 }

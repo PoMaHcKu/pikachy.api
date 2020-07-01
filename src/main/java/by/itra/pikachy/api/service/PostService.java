@@ -13,25 +13,32 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class PostService {
 
     private final PostRepository postRepository;
     private final PostMapper postMapper;
     private final UserService userService;
+    private final GenreService genreService;
 
     @Autowired
-    public PostService(PostRepository postRepository, PostMapper postMapper, UserService userService) {
+    public PostService(PostRepository postRepository,
+                       PostMapper postMapper,
+                       UserService userService,
+                       GenreService genreService,
+                       SectionService sectionService) {
         this.postRepository = postRepository;
         this.postMapper = postMapper;
         this.userService = userService;
+        this.genreService = genreService;
     }
 
+    @Transactional
     public PostDto create(PostDto postDto) {
         Post post = postMapper.toEntity(postDto);
-        post.setAuthor(userService.getAuthenticatedUser(SecurityContextHolder.getContext()));
-        post.setMark(0);
-        post.setCreated(GetDate.getLocalDate());
+        preparePostFields(post);
         return postMapper.toDto(postRepository.save(post));
     }
 
@@ -52,5 +59,12 @@ public class PostService {
 
     public void delete(int id) {
         postRepository.deleteById(id);
+    }
+
+    public void preparePostFields(Post post) {
+        post.setGenre(genreService.findByGenreName(post.getGenre().getGenreName()));
+        post.setAuthor(userService.getAuthenticatedUser(SecurityContextHolder.getContext()));
+        post.setMark(0);
+        post.setCreated(GetDate.getLocalDate());
     }
 }

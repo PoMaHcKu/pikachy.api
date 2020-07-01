@@ -1,15 +1,14 @@
 package by.itra.pikachy.api.entity;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "post")
@@ -37,25 +36,23 @@ public class Post {
     @Column(name = "updated")
     private LocalDateTime updated;
 
+    @ToString.Exclude
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_id", nullable = false)
     private User author;
 
     @OneToMany(mappedBy = "post")
-    private Set<Section> sections;
+    private List<Section> sections;
 
     @OneToMany(mappedBy = "post")
     private List<Commentary> commentaries;
 
-    @ManyToMany
-    @JoinTable(name = "post_genre",
-            joinColumns = @JoinColumn(name = "post_id"),
-            inverseJoinColumns = @JoinColumn(name = "gene_id"))
-    private List<Genre> genres;
+    @ManyToOne
+    @JoinColumn(name = "genre_id")
+    private Genre genre;
 
     public Post() {
-        this.sections = new HashSet<>();
+        this.sections = new ArrayList<>();
         this.commentaries = new ArrayList<>();
-        this.genres = new ArrayList<>();
     }
 }
