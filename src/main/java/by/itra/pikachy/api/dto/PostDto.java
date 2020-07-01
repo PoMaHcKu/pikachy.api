@@ -11,7 +11,9 @@ public class PostDto {
     private String title;
     private String description;
     private int mark;
-    private int user;
+    private int author;
+    private String created;
+    private String updated;
     private List<SectionDto> sections = new ArrayList<>();
     private List<CommentaryDto> commentaries = new ArrayList<>();
     private List<String> genres = new ArrayList<>();

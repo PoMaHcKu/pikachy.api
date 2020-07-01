@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,12 @@ public class Post {
 
     @Column(name = "mark")
     private int mark;
+
+    @Column(name = "created")
+    private LocalDateTime created;
+
+    @Column(name = "updated")
+    private LocalDateTime updated;
 
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_id", nullable = false)

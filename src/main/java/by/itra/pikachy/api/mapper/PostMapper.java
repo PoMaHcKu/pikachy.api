@@ -5,10 +5,17 @@ import by.itra.pikachy.api.entity.Genre;
 import by.itra.pikachy.api.entity.Post;
 import by.itra.pikachy.api.entity.User;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring", uses = {CommentaryMapper.class, SectionMapper.class})
 public interface PostMapper {
+    String DATE_FORMAT = "HH:mm dd.MM.yyyy";
 
+    @Mappings({
+            @Mapping(source = "created", target = "created", dateFormat = DATE_FORMAT),
+            @Mapping(source = "updated", target = "updated", dateFormat = DATE_FORMAT)
+    })
     PostDto toDto(Post post);
 
     Post toEntity(PostDto postDto);
