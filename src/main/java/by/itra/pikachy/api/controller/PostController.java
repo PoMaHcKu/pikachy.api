@@ -1,11 +1,9 @@
 package by.itra.pikachy.api.controller;
 
 import by.itra.pikachy.api.dto.PostDto;
-import by.itra.pikachy.api.entity.User;
 import by.itra.pikachy.api.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
