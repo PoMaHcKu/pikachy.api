@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -15,7 +14,6 @@ public class Section {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotBlank
     @Size(max = 50)
     @Column(name = "title", nullable = false)
     private String title;
@@ -33,8 +31,8 @@ public class Section {
     @Column(name = "place_number")
     private int placeNumber;
 
-    @ToString.Exclude
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "post_id", nullable = false)
+    @JoinColumn(name = "post_id")
+    @ToString.Exclude
     private Post post;
 }

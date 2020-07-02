@@ -1,6 +1,7 @@
 package by.itra.pikachy.api.entity;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ public class Genre {
     private int id;
     @Column(name = "genre_name")
     private String genreName;
+
+    @ToString.Exclude
     @OneToMany(mappedBy = "genre")
     private List<Post> posts = new ArrayList<>();
 }

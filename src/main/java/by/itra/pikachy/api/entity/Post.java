@@ -18,7 +18,6 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotBlank
     @Size(max = 50)
     @Column(name = "title", nullable = false)
     private String title;
@@ -37,11 +36,11 @@ public class Post {
     private LocalDateTime updated;
 
     @ToString.Exclude
-    @ManyToOne(targetEntity = User.class)
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User author;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Section> sections;
 
     @OneToMany(mappedBy = "post")
@@ -50,9 +49,4 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "genre_id")
     private Genre genre;
-
-    public Post() {
-        this.sections = new ArrayList<>();
-        this.commentaries = new ArrayList<>();
-    }
 }

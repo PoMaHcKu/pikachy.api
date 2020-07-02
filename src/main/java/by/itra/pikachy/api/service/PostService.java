@@ -27,8 +27,7 @@ public class PostService {
     public PostService(PostRepository postRepository,
                        PostMapper postMapper,
                        UserService userService,
-                       GenreService genreService,
-                       SectionService sectionService) {
+                       GenreService genreService) {
         this.postRepository = postRepository;
         this.postMapper = postMapper;
         this.userService = userService;
@@ -61,10 +60,11 @@ public class PostService {
         postRepository.deleteById(id);
     }
 
-    public void preparePostFields(Post post) {
+    private void preparePostFields(Post post) {
         post.setGenre(genreService.findByGenreName(post.getGenre().getGenreName()));
         post.setAuthor(userService.getAuthenticatedUser(SecurityContextHolder.getContext()));
         post.setMark(0);
         post.setCreated(GetDate.getLocalDate());
+        post.getSections().forEach(s -> s.setPost(post));
     }
 }

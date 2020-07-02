@@ -13,7 +13,7 @@ public class SectionService {
         this.sectionRepository = sectionRepository;
     }
 
-    public Section create(Section section) {
+    public Section save(Section section) {
         return sectionRepository.save(section);
     }
 }
