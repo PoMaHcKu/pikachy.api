@@ -15,6 +15,6 @@ public class Genre {
     private int id;
     @Column(name = "genre_name")
     private String genreName;
-    @ManyToMany(mappedBy = "genres")
+    @OneToMany(mappedBy = "genre")
     private List<Post> posts = new ArrayList<>();
 }
