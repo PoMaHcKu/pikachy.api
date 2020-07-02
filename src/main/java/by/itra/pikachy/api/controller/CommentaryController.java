@@ -21,16 +21,16 @@ public class CommentaryController {
 
     @GetMapping("{postId}")
     public List<Commentary> getCommentariesToPost(@PathVariable @Valid int postId) {
-        return commentaryService.getCommentariesByPostId(postId);
+        return commentaryService.getByPostId(postId);
     }
 
     @PostMapping
-    public CommentaryDto created(@RequestBody @Valid CommentaryDto commentaryDto) {
-        return commentaryService.created(commentaryDto);
+    public CommentaryDto create(@RequestBody @Valid CommentaryDto commentaryDto) {
+        return commentaryService.create(commentaryDto);
     }
 
     @DeleteMapping("{id}")
-    public void deleteCommentary(@PathVariable @Valid int id) {
-        commentaryService.deleteCommentary(id);
+    public void delete(@PathVariable @Valid int id) {
+        commentaryService.delete(id);
     }
 }

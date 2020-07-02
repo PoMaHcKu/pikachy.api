@@ -20,16 +20,6 @@ public interface PostMapper {
 
     Post toEntity(PostDto postDto);
 
-    default User toEntity(int user) {
-        User u = new User();
-        u.setId(user);
-        return u;
-    }
-
-    default int toDto(User entity) {
-        return entity.getId();
-    }
-
     default Genre toEntity(String genreName) {
         Genre genre = new Genre();
         genre.setGenreName(genreName);

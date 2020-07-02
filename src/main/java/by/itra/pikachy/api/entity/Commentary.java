@@ -1,6 +1,7 @@
 package by.itra.pikachy.api.entity;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -24,12 +25,13 @@ public class Commentary {
     private LocalDateTime created;
 
     @NotBlank
-    @ManyToOne(targetEntity = Post.class)
+    @ToString.Exclude
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
-    @NotBlank
-    @ManyToOne(targetEntity = User.class)
+    @ToString.Exclude
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "author_id", nullable = false)
     private User user;
 }

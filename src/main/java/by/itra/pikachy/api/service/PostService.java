@@ -47,6 +47,10 @@ public class PostService {
         return postMapper.toDto(postRepository.save(post));
     }
 
+    public Post getById(int id) {
+        return postRepository.getOne(id);
+    }
+
     public Page<PostDto> getPosts(int page, int size, String sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, sort);
         return postRepository.findAll(pageable).map(postMapper::toDto);
