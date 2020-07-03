@@ -27,7 +27,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable().cors()
                 .and()
                 .authorizeRequests()
-                .mvcMatchers(HttpMethod.GET, "/posts").permitAll()
+                .mvcMatchers(HttpMethod.GET, "/post").permitAll()
                 .mvcMatchers("/login", "/registration/**", "/search").permitAll()
                 .mvcMatchers("/admin/**").hasAnyRole("ADMIN")
                 .anyRequest().hasRole("USER")
