@@ -7,10 +7,12 @@ import by.itra.pikachy.api.mapper.CommentaryMapper;
 import by.itra.pikachy.api.repository.CommentaryRepository;
 import by.itra.pikachy.api.util.GetDate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class CommentaryService {
@@ -39,8 +41,9 @@ public class CommentaryService {
         return commentaryMapper.toDto(commentaryRepository.save(commentary));
     }
 
-    public List<Commentary> getByPostId(int postId) {
-        return commentaryRepository.findByPostId(postId);
+    public Page<CommentaryDto> getByPostId(int postId, int page, int size, String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, sort);
+        return commentaryRepository.findByPostId(postId, pageable).map(commentaryMapper::toDto);
     }
 
     public void delete(int id) {
