@@ -20,9 +20,11 @@ public class CommentaryController {
         this.commentaryService = commentaryService;
     }
 
-    @GetMapping("{postId}")
-    public Page<CommentaryDto> getCommentariesFromPost(@PathVariable @Valid int postId,
-                                                       int page, int size, String sort) {
+    @GetMapping("{postId}{page}{size}{sort}")
+    public Page<CommentaryDto> getCommentariesFromPost(@PathVariable int postId,
+                                                       @PathVariable int page,
+                                                       @PathVariable int size,
+                                                       @PathVariable String sort) {
         return commentaryService.getByPostId(postId, page, size, sort);
     }
 
