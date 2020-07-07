@@ -11,13 +11,13 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class CommentarySocketConfiguration implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/handler").setAllowedOrigins("*").withSockJS();
+        registry.addEndpoint("/commentary-messaging").setAllowedOrigins("*").withSockJS();
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/app");
-        registry.setApplicationDestinationPrefixes("/topic", "/queue");
+        registry.enableSimpleBroker("/chat");
+        registry.setApplicationDestinationPrefixes("/app");
     }
 
 
