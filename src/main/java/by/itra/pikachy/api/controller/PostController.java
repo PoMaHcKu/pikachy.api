@@ -4,9 +4,11 @@ import by.itra.pikachy.api.dto.PostDto;
 import by.itra.pikachy.api.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/post")
@@ -32,8 +34,8 @@ public class PostController {
     }
 
     @PostMapping
-    public PostDto create(@RequestBody @Valid PostDto postDto) {
-       return postService.create(postDto);
+    public PostDto create(@RequestBody @Valid PostDto postDto, @AuthenticationPrincipal Principal user) {
+        return postService.create(postDto, user);
     }
 
     @PutMapping

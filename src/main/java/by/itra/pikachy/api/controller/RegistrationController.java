@@ -4,9 +4,11 @@ import by.itra.pikachy.api.dto.UserDto;
 import by.itra.pikachy.api.entity.User;
 import by.itra.pikachy.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @RestController
 public class RegistrationController {
@@ -29,7 +31,7 @@ public class RegistrationController {
     }
 
     @GetMapping("/sign-in")
-    public UserDto login() {
-        return userService.signIn();
+    public UserDto login(@AuthenticationPrincipal Principal user) {
+        return userService.signIn(user);
     }
 }

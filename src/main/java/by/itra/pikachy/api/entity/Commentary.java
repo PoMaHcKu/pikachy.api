@@ -24,7 +24,6 @@ public class Commentary {
     @Column(name = "created")
     private LocalDateTime created;
 
-    @NotBlank
     @ToString.Exclude
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "post_id", nullable = false)

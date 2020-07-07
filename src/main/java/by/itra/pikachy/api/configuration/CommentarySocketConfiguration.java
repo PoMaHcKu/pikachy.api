@@ -11,12 +11,14 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class CommentarySocketConfiguration implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/pika-api-subscribe").withSockJS();
+        registry.addEndpoint("/handler").setAllowedOrigins("*").withSockJS();
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/commentaries");
-        registry.setApplicationDestinationPrefixes("/p");
+        registry.enableSimpleBroker("/app");
+        registry.setApplicationDestinationPrefixes("/topic", "/queue");
     }
+
+
 }

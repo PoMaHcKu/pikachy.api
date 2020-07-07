@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.security.Principal;
 
 @Service
 public class PostService {
@@ -35,8 +36,9 @@ public class PostService {
     }
 
     @Transactional
-    public PostDto create(PostDto postDto) {
+    public PostDto create(PostDto postDto, Principal user) {
         Post post = postMapper.toEntity(postDto);
+        post.setAuthor(userService.getAuthenticatedUser(user));
         preparePostFields(post);
         return postMapper.toDto(postRepository.save(post));
     }
@@ -66,7 +68,6 @@ public class PostService {
 
     private void preparePostFields(Post post) {
         post.setGenre(genreService.findByGenreName(post.getGenre().getGenreName()));
-        post.setAuthor(userService.getAuthenticatedUser(SecurityContextHolder.getContext()));
         post.setMark(0);
         post.setCreated(GetDate.getLocalDate());
         post.getSections().forEach(s -> s.setPost(post));

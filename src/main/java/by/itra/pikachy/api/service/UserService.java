@@ -12,15 +12,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.security.Principal;
 import java.security.SecureRandom;
-import java.util.List;
 
 @Service
 public class UserService {
@@ -88,13 +86,12 @@ public class UserService {
         return bytesToHex(bytes);
     }
 
-    public UserDto signIn() {
-        return userMapper.toDto(getAuthenticatedUser(SecurityContextHolder.getContext()));
+    public UserDto signIn(@AuthenticationPrincipal Principal user) {
+        return userMapper.toDto(getAuthenticatedUser(user));
     }
 
-    public User getAuthenticatedUser(SecurityContext context) {
-        UserDetails userDetails = (UserDetails) context.getAuthentication().getPrincipal();
-        return userRepository.findByUsername(userDetails.getUsername());
+    public User getAuthenticatedUser(Principal user) {
+        return userRepository.findByUsername(user.getName());
     }
 
     public void update(User user) {
