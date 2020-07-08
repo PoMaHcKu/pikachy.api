@@ -14,7 +14,6 @@ import java.security.Principal;
 public class RegistrationController {
     private final UserService userService;
 
-
     @Autowired
     public RegistrationController(UserService userService) {
         this.userService = userService;
@@ -31,7 +30,10 @@ public class RegistrationController {
     }
 
     @GetMapping("/sign-in")
-    public UserDto login(@AuthenticationPrincipal Principal user) {
+    public void login() {}
+
+    @GetMapping("/auth-me")
+    public UserDto isAuth(@AuthenticationPrincipal Principal user) {
         return userService.signIn(user);
     }
 }

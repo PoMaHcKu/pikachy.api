@@ -87,7 +87,7 @@ public class UserService {
     }
 
     public UserDto signIn(@AuthenticationPrincipal Principal user) {
-        return userMapper.toDto(getAuthenticatedUser(user));
+        return user != null ? userMapper.toDto(getAuthenticatedUser(user)) : null;
     }
 
     public User getAuthenticatedUser(Principal user) {
