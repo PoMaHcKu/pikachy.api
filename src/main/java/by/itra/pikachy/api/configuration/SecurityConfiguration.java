@@ -7,7 +7,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -15,13 +14,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import javax.servlet.http.Cookie;
 import java.util.Collections;
 
-import static org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter.Directive.*;
-
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
-    private static final ClearSiteDataHeaderWriter.Directive[] SOURCE =
-            {CACHE, COOKIES, STORAGE, EXECUTION_CONTEXTS};
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
@@ -34,7 +28,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable().cors()
                 .and()
                 .authorizeRequests()
-                .mvcMatchers(HttpMethod.GET, "/post/**", "/commentary/**", "/user/**", "/chat/commentaries/**", "/commentary-messaging/**").permitAll()                .mvcMatchers("/login", "/registration/**", "/search").permitAll()
+                .mvcMatchers(HttpMethod.GET, "/post/**", "/commentary/**", "/user/**", "/chat/commentaries/**", "/commentary-messaging/**").permitAll()
+                .mvcMatchers("/login", "/registration/**", "/search").permitAll()
                 .mvcMatchers("/admin/**").hasAnyRole("ADMIN")
                 .anyRequest().hasRole("USER")
                 .and()

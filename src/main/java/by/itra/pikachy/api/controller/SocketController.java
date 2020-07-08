@@ -21,12 +21,9 @@ public class SocketController {
         this.commentaryService = commentaryService;
     }
 
-    @MessageMapping("/add-commentary")
-    @SendTo("/commentaries/updates")
+    @MessageMapping("/commentary")
+    @SendTo("/chat/commentaries")
     public CommentaryDto create(@Payload CommentaryDto commentary, @AuthenticationPrincipal Principal user) {
-        if (user == null) {
-            return null;
-        }
-        return commentaryService.create(commentary, user);
+        return user == null ? null : commentaryService.create(commentary, user);
     }
 }

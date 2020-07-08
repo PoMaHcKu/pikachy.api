@@ -19,6 +19,4 @@ public class CommentarySocketConfiguration implements WebSocketMessageBrokerConf
         registry.enableSimpleBroker("/chat");
         registry.setApplicationDestinationPrefixes("/app");
     }
-
-
 }
