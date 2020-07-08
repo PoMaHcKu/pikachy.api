@@ -7,12 +7,15 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.servlet.http.Cookie;
 import java.util.Collections;
+
+import static jdk.nashorn.internal.runtime.PropertyDescriptor.GET;
 
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -36,14 +39,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .and()
                 .logout(logout -> logout
-                        .logoutUrl("sign-out")
-                        .addLogoutHandler((request, response, auth) -> {
-                            for (Cookie cookie : request.getCookies()) {
-                                Cookie deleteCookies = new Cookie(cookie.getName(), null);
-                                deleteCookies.setMaxAge(0);
-                                response.addCookie(deleteCookies);
-                            }
-                        }));
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/sign-out", "GET")));
 
     }
 

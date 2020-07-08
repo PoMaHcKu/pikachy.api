@@ -29,11 +29,14 @@ public class RegistrationController {
         return userService.verifyAndCleanToken(token);
     }
 
-    @GetMapping("/sign-in")
+    @GetMapping("/login")
     public void login() {}
 
     @GetMapping("/auth-me")
     public UserDto isAuth(@AuthenticationPrincipal Principal user) {
         return userService.signIn(user);
     }
+
+    @GetMapping("/sign-out")
+    public void logout() {}
 }
