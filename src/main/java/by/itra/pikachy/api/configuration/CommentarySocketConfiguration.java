@@ -16,7 +16,7 @@ public class CommentarySocketConfiguration implements WebSocketMessageBrokerConf
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/chat");
+        registry.enableSimpleBroker("/topic");
         registry.setApplicationDestinationPrefixes("/app");
     }
 }
