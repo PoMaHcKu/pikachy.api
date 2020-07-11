@@ -12,10 +12,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import javax.servlet.http.Cookie;
 import java.util.Collections;
-
-import static jdk.nashorn.internal.runtime.PropertyDescriptor.GET;
 
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -31,7 +28,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable().cors()
                 .and()
                 .authorizeRequests()
-                .mvcMatchers(HttpMethod.GET, "/post/**", "/commentary/**", "/user/**", "/chat/commentaries/**", "/commentary-messaging/**", "/auth-me/**").permitAll()
+                .mvcMatchers(HttpMethod.GET, "/post/**", "/commentary/**", "/user/**",
+                        "/chat/commentaries/**", "/commentary-messaging/**", "/auth-me/**", "/genre").permitAll()
                 .mvcMatchers("/login", "/registration/**", "/search").permitAll()
                 .mvcMatchers("/admin/**").hasAnyRole("ADMIN")
                 .anyRequest().hasRole("USER")

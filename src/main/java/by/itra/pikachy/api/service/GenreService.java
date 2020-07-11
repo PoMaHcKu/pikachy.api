@@ -5,6 +5,8 @@ import by.itra.pikachy.api.repository.GenreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class GenreService {
 
@@ -17,5 +19,9 @@ public class GenreService {
 
     public Genre findByGenreName(String genreName) {
         return genreRepository.findByGenreName(genreName);
+    }
+
+    public List<Genre> getGenres() {
+        return genreRepository.findAll();
     }
 }
