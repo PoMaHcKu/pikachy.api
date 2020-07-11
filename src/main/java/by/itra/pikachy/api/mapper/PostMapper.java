@@ -1,14 +1,12 @@
 package by.itra.pikachy.api.mapper;
 
 import by.itra.pikachy.api.dto.PostDto;
-import by.itra.pikachy.api.entity.Genre;
 import by.itra.pikachy.api.entity.Post;
-import by.itra.pikachy.api.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
-@Mapper(componentModel = "spring", uses = {CommentaryMapper.class, SectionMapper.class})
+@Mapper(componentModel = "spring", uses = {CommentaryMapper.class, SectionMapper.class, GenreMapper.class})
 public interface PostMapper {
     String DATE_FORMAT = "HH:mm dd.MM.yyyy";
 
@@ -19,14 +17,4 @@ public interface PostMapper {
     PostDto toDto(Post post);
 
     Post toEntity(PostDto postDto);
-
-    default Genre toEntity(String genreName) {
-        Genre genre = new Genre();
-        genre.setGenreName(genreName);
-        return genre;
-    }
-
-    default String toDto(Genre genre) {
-        return genre.getGenreName();
-    }
 }
