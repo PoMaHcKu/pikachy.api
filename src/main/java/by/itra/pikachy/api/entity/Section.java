@@ -5,6 +5,8 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "section")
@@ -25,9 +27,6 @@ public class Section {
     @Column(name = "image_id")
     private String imageId;
 
-    @Column(name = "count_like")
-    private int countLike;
-
     @Column(name = "place_number")
     private int placeNumber;
 
@@ -35,4 +34,13 @@ public class Section {
     @JoinColumn(name = "post_id")
     @ToString.Exclude
     private Post post;
+
+    @ToString.Exclude
+    @ManyToMany
+    @JoinTable(
+            name = "section_like",
+            joinColumns = {@JoinColumn(name = "section_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")}
+    )
+    private Set<User> likes = new HashSet<>();
 }
