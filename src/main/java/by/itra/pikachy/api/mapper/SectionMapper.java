@@ -7,6 +7,7 @@ import by.itra.pikachy.api.entity.User;
 import by.itra.pikachy.api.security.UserDetailsImpl;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Set;
@@ -34,14 +35,24 @@ public interface SectionMapper {
         return users.size();
     }
 
-    default boolean is(Set<User> users) {
+    default boolean isLiked(Set<User> users) {
+        String username = getAuthenticatedUserName();
         for (User usr : users) {
-            UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext()
-                    .getAuthentication().getPrincipal();
-            if (usr.getUsername().equals(user.getUsername())) {
+            if (usr.getUsername().equals(username)) {
                 return true;
             }
         }
         return false;
+    }
+
+    default String getAuthenticatedUserName() {
+        Authentication authentication = SecurityContextHolder.getContext()
+                .getAuthentication();
+        String anonymous = authentication.getPrincipal().toString();
+        if (anonymous.contains("anonymousUser")) {
+            return null;
+        }
+        UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
+        return user.getUsername();
     }
 }
