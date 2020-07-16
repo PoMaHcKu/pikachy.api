@@ -1,19 +1,22 @@
 package by.itra.pikachy.api.service;
 
 import by.itra.pikachy.api.dto.PostDto;
+import by.itra.pikachy.api.entity.Genre;
 import by.itra.pikachy.api.entity.Post;
+import by.itra.pikachy.api.entity.Tag;
 import by.itra.pikachy.api.mapper.PostMapper;
 import by.itra.pikachy.api.repository.PostRepository;
 import by.itra.pikachy.api.util.GetDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class PostService {
@@ -22,16 +25,19 @@ public class PostService {
     private final PostMapper postMapper;
     private final UserService userService;
     private final GenreService genreService;
+    private final TagService tagService;
 
     @Autowired
     public PostService(PostRepository postRepository,
                        PostMapper postMapper,
                        UserService userService,
-                       GenreService genreService) {
+                       GenreService genreService,
+                       TagService tagService) {
         this.postRepository = postRepository;
         this.postMapper = postMapper;
         this.userService = userService;
         this.genreService = genreService;
+        this.tagService = tagService;
     }
 
     @Transactional
@@ -53,12 +59,30 @@ public class PostService {
     }
 
     public Page<PostDto> getPosts(int page, int size, String sort) {
-        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, sort);
-        return postRepository.findAll(pageable).map(postMapper::toDto);
+        return postRepository.findAll(PageRequest.of(page, size, Sort.Direction.DESC, sort))
+                .map(postMapper::toDto);
     }
 
     public PostDto getPost(int id) {
         return postMapper.toDto(postRepository.getOne(id));
+    }
+
+    public Page<PostDto> getByGenre(String genre, int page, int size, String sort) {
+        Genre genreFromDb = genreService.findByGenreName(genre);
+        return postRepository
+                .findByGenre(
+                        PageRequest.of(page, size, Sort.Direction.DESC, sort),
+                        genreFromDb)
+                .map(postMapper::toDto);
+    }
+
+    public Page<PostDto> getByTags(String tag, int page, int size, String sort) {
+        List<Tag> realTag = new ArrayList<Tag>() {{
+            add(tagService.getByTagName(tag));
+        }};
+        return postRepository
+                .findByTagsIn(PageRequest.of(page, size, Sort.Direction.DESC, sort), realTag)
+                .map(postMapper::toDto);
     }
 
     public void delete(int id) {

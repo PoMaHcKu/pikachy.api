@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/post")
@@ -31,6 +32,22 @@ public class PostController {
                                   @RequestParam(required = false, defaultValue = "10") int size,
                                   @RequestParam(required = false, defaultValue = "id") String sortBy) {
         return postService.getPosts(page, size, sortBy);
+    }
+
+    @GetMapping("/genre")
+    public Page<PostDto> getByGenre(@RequestParam(required = false, defaultValue = "0") int page,
+                                    @RequestParam(required = false, defaultValue = "10") int size,
+                                    @RequestParam(required = false, defaultValue = "id") String sortBy,
+                                    @RequestParam String genre) {
+        return postService.getByGenre(genre, page, size, sortBy);
+    }
+
+    @GetMapping("/tags")
+    public Page<PostDto> getByTags(@RequestParam String tag,
+                                   @RequestParam(defaultValue = "0") int page,
+                                   @RequestParam(defaultValue = "10") int size,
+                                   @RequestParam(defaultValue = "id") String sortBy) {
+        return postService.getByTags(tag, page, size, sortBy);
     }
 
     @PostMapping
