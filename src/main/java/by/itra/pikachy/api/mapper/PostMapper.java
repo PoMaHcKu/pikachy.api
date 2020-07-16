@@ -6,7 +6,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
-@Mapper(componentModel = "spring", uses = {CommentaryMapper.class, SectionMapper.class, GenreMapper.class})
+@Mapper(componentModel = "spring", uses = {CommentaryMapper.class, SectionMapper.class,
+        GenreMapper.class, TagMapper.class})
 public interface PostMapper {
     String DATE_FORMAT = "HH:mm dd.MM.yyyy";
 
