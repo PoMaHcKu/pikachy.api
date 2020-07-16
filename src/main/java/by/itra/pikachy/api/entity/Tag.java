@@ -19,5 +19,5 @@ public class Tag {
 
     @ToString.Exclude
     @ManyToMany(mappedBy = "tags")
-    private List<Post> users;
+    private List<Post> posts;
 }

@@ -7,7 +7,7 @@ import by.itra.pikachy.api.entity.Tag;
 import by.itra.pikachy.api.mapper.PostMapper;
 import by.itra.pikachy.api.repository.PostRepository;
 import by.itra.pikachy.api.util.GetDate;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class PostService {
 
     private final PostRepository postRepository;
@@ -26,19 +27,6 @@ public class PostService {
     private final UserService userService;
     private final GenreService genreService;
     private final TagService tagService;
-
-    @Autowired
-    public PostService(PostRepository postRepository,
-                       PostMapper postMapper,
-                       UserService userService,
-                       GenreService genreService,
-                       TagService tagService) {
-        this.postRepository = postRepository;
-        this.postMapper = postMapper;
-        this.userService = userService;
-        this.genreService = genreService;
-        this.tagService = tagService;
-    }
 
     @Transactional
     public PostDto create(PostDto postDto, Principal user) {
@@ -77,11 +65,11 @@ public class PostService {
     }
 
     public Page<PostDto> getByTags(String tag, int page, int size, String sort) {
-        List<Tag> realTag = new ArrayList<Tag>() {{
+        List<Tag> realTags = new ArrayList<Tag>() {{
             add(tagService.getByTagName(tag));
         }};
         return postRepository
-                .findByTagsIn(PageRequest.of(page, size, Sort.Direction.DESC, sort), realTag)
+                .findByTagsIn(PageRequest.of(page, size, Sort.Direction.DESC, sort), realTags)
                 .map(postMapper::toDto);
     }
 
