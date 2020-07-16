@@ -2,7 +2,7 @@ package by.itra.pikachy.api.controller;
 
 import by.itra.pikachy.api.dto.CommentaryDto;
 import by.itra.pikachy.api.service.CommentaryService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -11,14 +11,9 @@ import org.springframework.stereotype.Controller;
 import java.security.Principal;
 
 @Controller
+@AllArgsConstructor
 public class SocketController {
-
     private final CommentaryService commentaryService;
-
-    @Autowired
-    public SocketController(CommentaryService commentaryService) {
-        this.commentaryService = commentaryService;
-    }
 
     @MessageMapping("/commentary/{postId}")
     public CommentaryDto create(@Payload CommentaryDto commentary,

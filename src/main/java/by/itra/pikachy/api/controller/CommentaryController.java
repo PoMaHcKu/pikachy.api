@@ -2,7 +2,7 @@ package by.itra.pikachy.api.controller;
 
 import by.itra.pikachy.api.dto.CommentaryDto;
 import by.itra.pikachy.api.service.CommentaryService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -12,13 +12,9 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("/commentary")
+@AllArgsConstructor
 public class CommentaryController {
     private final CommentaryService commentaryService;
-
-    @Autowired
-    public CommentaryController(CommentaryService commentaryService) {
-        this.commentaryService = commentaryService;
-    }
 
     @GetMapping
     public Page<CommentaryDto> getCommentariesFromPost(@RequestParam int postId,
