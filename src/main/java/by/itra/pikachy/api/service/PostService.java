@@ -21,7 +21,6 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class PostService {
-
     private final PostRepository postRepository;
     private final PostMapper postMapper;
     private final UserService userService;

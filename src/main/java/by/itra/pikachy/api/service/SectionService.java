@@ -4,25 +4,17 @@ import by.itra.pikachy.api.dto.SectionDto;
 import by.itra.pikachy.api.entity.Section;
 import by.itra.pikachy.api.mapper.SectionMapper;
 import by.itra.pikachy.api.repository.SectionRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 
 @Service
+@AllArgsConstructor
 public class SectionService {
-
     private final SectionRepository sectionRepository;
     private final SectionMapper sectionMapper;
     private final UserService userService;
-
-    public SectionService(SectionRepository sectionRepository,
-                          SectionMapper sectionMapper,
-                          UserService userService) {
-        this.sectionRepository = sectionRepository;
-        this.sectionMapper = sectionMapper;
-        this.userService = userService;
-
-    }
 
     public SectionDto like(int sectionId, Principal principal) {
         Section section = sectionRepository.getOne(sectionId);
