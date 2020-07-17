@@ -79,7 +79,6 @@ public class PostService {
     private void preparePostFields(Post post) {
         post.setGenre(genreService.findByGenreName(post.getGenre().getGenreName()));
         post.setTags(tagService.saveAll(post.getTags()));
-        post.setMark(0);
         post.setCreated(GetDate.getLocalDate());
         post.getSections().forEach(s -> s.setPost(post));
     }
