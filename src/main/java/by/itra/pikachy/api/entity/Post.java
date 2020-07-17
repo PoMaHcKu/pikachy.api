@@ -24,9 +24,6 @@ public class Post {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "mark")
-    private int mark;
-
     @Column(name = "created")
     private LocalDateTime created;
 
