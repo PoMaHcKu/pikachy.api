@@ -72,10 +72,6 @@ public class PostService {
                 .map(postMapper::toDto);
     }
 
-    public void delete(int id) {
-        postRepository.deleteById(id);
-    }
-
     private void preparePostFields(Post post) {
         post.setGenre(genreService.findByGenreName(post.getGenre().getGenreName()));
         post.setTags(tagService.saveAll(post.getTags()));

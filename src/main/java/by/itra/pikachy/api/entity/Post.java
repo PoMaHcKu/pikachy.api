@@ -2,6 +2,8 @@ package by.itra.pikachy.api.entity;
 
 import lombok.Data;
 import lombok.ToString;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -11,6 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "post")
 @Data
+@Indexed
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,14 +21,13 @@ public class Post {
 
     @Size(max = 50)
     @Column(name = "title", nullable = false)
+    @Field
     private String title;
 
     @Size(max = 300)
     @Column(name = "description")
+    @Field
     private String description;
-
-    @Column(name = "mark")
-    private int mark;
 
     @Column(name = "created")
     private LocalDateTime created;

@@ -1,6 +1,7 @@
 package by.itra.pikachy.api.controller;
 
 import by.itra.pikachy.api.dto.PostDto;
+import by.itra.pikachy.api.repository.PostSearch;
 import by.itra.pikachy.api.service.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/post")
@@ -16,6 +18,7 @@ import java.security.Principal;
 public class PostController {
 
     private final PostService postService;
+    private final PostSearch postSearch;
 
     @GetMapping("{id}")
     public PostDto getPost(@PathVariable int id) {
@@ -43,6 +46,11 @@ public class PostController {
                                    @RequestParam(defaultValue = "10") int size,
                                    @RequestParam(defaultValue = "id") String sortBy) {
         return postService.getByTags(tag, page, size, sortBy);
+    }
+
+    @GetMapping("/search/{text}")
+    public List<PostDto> search(@PathVariable String text) {
+        return postSearch.search(text);
     }
 
     @PostMapping

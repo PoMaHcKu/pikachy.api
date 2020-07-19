@@ -9,7 +9,6 @@ public class PostDto {
     private int id;
     private String title;
     private String description;
-    private int mark;
     private int author;
     private String created;
     private String updated;
