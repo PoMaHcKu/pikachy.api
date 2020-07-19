@@ -2,6 +2,7 @@ package by.itra.pikachy.api.entity;
 
 import lombok.Data;
 import lombok.ToString;
+import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -18,10 +19,12 @@ public class Section {
 
     @Size(max = 50)
     @Column(name = "title", nullable = false)
+    @Field
     private String title;
 
     @Size(max = 10000)
     @Column(name = "article")
+    @Field
     private String article;
 
     @Column(name = "image_id")

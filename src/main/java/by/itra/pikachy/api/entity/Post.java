@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.ToString;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -41,9 +42,11 @@ public class Post {
     private User author;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @IndexedEmbedded(includePaths = {"article", "title"})
     private List<Section> sections;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @IndexedEmbedded(includePaths = {"textCommentary"})
     private List<Commentary> commentaries;
 
     @ManyToOne

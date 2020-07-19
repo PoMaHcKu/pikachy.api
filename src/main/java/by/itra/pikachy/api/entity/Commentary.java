@@ -2,6 +2,7 @@ package by.itra.pikachy.api.entity;
 
 import lombok.Data;
 import lombok.ToString;
+import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -19,6 +20,7 @@ public class Commentary {
     @NotBlank
     @Size(max = 1000)
     @Column(name = "text_commentary")
+    @Field
     private String textCommentary;
 
     @Column(name = "created")

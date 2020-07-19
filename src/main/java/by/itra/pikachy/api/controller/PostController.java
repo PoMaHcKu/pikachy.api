@@ -1,7 +1,7 @@
 package by.itra.pikachy.api.controller;
 
 import by.itra.pikachy.api.dto.PostDto;
-import by.itra.pikachy.api.repository.PostSearch;
+import by.itra.pikachy.api.service.PostSearchService;
 import by.itra.pikachy.api.service.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,7 +18,7 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
-    private final PostSearch postSearch;
+    private final PostSearchService postSearch;
 
     @GetMapping("{id}")
     public PostDto getPost(@PathVariable int id) {
