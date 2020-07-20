@@ -32,11 +32,6 @@ public class PostSearchService {
         if (fullTextEntityManager == null) {
             fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
         }
-        try {
-            fullTextEntityManager.createIndexer().startAndWait();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         return fullTextEntityManager;
     }
 
