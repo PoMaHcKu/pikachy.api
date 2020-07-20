@@ -29,10 +29,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .mvcMatchers(HttpMethod.GET, "/post/**", "/commentary/**", "/user/**",
-                        "/chat/commentaries/**", "/commentary-messaging/**", "/auth-me/**", "/genre").permitAll()
+                        "/chat/commentaries/**", "/commentary-messaging/**", "/auth-me/**",
+                        "/genre", "/tags").permitAll()
                 .mvcMatchers("/login", "/registration/**", "/search").permitAll()
                 .mvcMatchers("/admin/**").hasAnyRole("ADMIN")
-                .anyRequest().hasRole("USER")
+                .anyRequest().hasAnyRole("ADMIN", "USER")
                 .and()
                 .httpBasic()
                 .and()

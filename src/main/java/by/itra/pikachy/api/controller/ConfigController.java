@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/admin-config")
+@RequestMapping("/admin")
 public class ConfigController {
     private final PostSearchService postSearchService;
     
