@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
+@Transactional
 public class PostSearchService {
 
     private final PostMapper postMapper;
@@ -35,7 +36,6 @@ public class PostSearchService {
         return fullTextEntityManager;
     }
 
-    @Transactional
     public List<PostDto> search(String text) {
         QueryBuilder builder = getFullTextEntityManager()
                 .getSearchFactory()
