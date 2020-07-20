@@ -53,11 +53,6 @@ public class PostController {
         return postSearch.search(text);
     }
 
-    @GetMapping("/index")
-    public void createIndex() {
-        postSearch.updateIndexes();
-    }
-
     @PostMapping
     public PostDto create(@RequestBody @Valid PostDto postDto, @AuthenticationPrincipal Principal user) {
         return postService.create(postDto, user);
