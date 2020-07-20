@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/admin/config")
+@RequestMapping("/admin-config")
 public class ConfigController {
     private final PostSearchService postSearchService;
     
-    @GetMapping("indexes")
+    @GetMapping("/indexes")
     public void createIndexes() {
         postSearchService.updateIndexes();
     }
