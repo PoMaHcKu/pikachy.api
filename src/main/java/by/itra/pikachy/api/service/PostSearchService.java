@@ -24,6 +24,8 @@ import java.util.stream.Collectors;
 @Transactional
 public class PostSearchService {
 
+    //WARNING - never do that
+    private static int countRequest = 0;
     private final PostMapper postMapper;
     @PersistenceContext(type = PersistenceContextType.EXTENDED)
     private EntityManager entityManager;
@@ -32,6 +34,10 @@ public class PostSearchService {
     public FullTextEntityManager getFullTextEntityManager() {
         if (fullTextEntityManager == null) {
             fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+        }
+        //WARNING - never do that (part 2)
+        if (countRequest == 0) {
+            updateIndexes();
         }
         return fullTextEntityManager;
     }
@@ -87,5 +93,6 @@ public class PostSearchService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        countRequest++;
     }
 }
