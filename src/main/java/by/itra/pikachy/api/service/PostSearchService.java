@@ -32,11 +32,6 @@ public class PostSearchService {
         if (fullTextEntityManager == null) {
             fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
         }
-        try {
-            fullTextEntityManager.createIndexer().startAndWait();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         return fullTextEntityManager;
     }
 
@@ -84,5 +79,13 @@ public class PostSearchService {
                 .createQuery();
         FullTextQuery jpaQuery = manager.createFullTextQuery(query, Post.class, Section.class);
         return jpaQuery.getResultList();
+    }
+
+    public void updateIndexed() {
+        try {
+            fullTextEntityManager.createIndexer().startAndWait();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
