@@ -15,29 +15,33 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-@Transactional
 @RequiredArgsConstructor
 public class PostSearchService {
 
-    @PersistenceContext
-    private final EntityManager entityManager;
     private final PostMapper postMapper;
+    @PersistenceContext(type = PersistenceContextType.EXTENDED)
+    private EntityManager entityManager;
     private FullTextEntityManager fullTextEntityManager;
 
-    public List<PostDto> search(String text) {
-        if (fullTextEntityManager == null || !fullTextEntityManager.isOpen()) {
-            fullTextEntityManager = initializeFullTextEntityManager();
+    public FullTextEntityManager getFullTextEntityManager() {
+        if (fullTextEntityManager == null) {
+            fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
         }
-        QueryBuilder builder = fullTextEntityManager
+        return fullTextEntityManager;
+    }
+
+    @Transactional
+    public List<PostDto> search(String text) {
+        QueryBuilder builder = getFullTextEntityManager()
                 .getSearchFactory()
                 .buildQueryBuilder()
                 .forEntity(Post.class)
                 .get();
-
         List<Post> result = fullTextWithLike(text, builder, fullTextEntityManager);
         return result.size() == 0 ?
                 fullText(text, builder, fullTextEntityManager).stream().map(postMapper::toDto).collect(Collectors.toList()) :
@@ -75,15 +79,5 @@ public class PostSearchService {
                 .createQuery();
         FullTextQuery jpaQuery = manager.createFullTextQuery(query, Post.class, Section.class);
         return jpaQuery.getResultList();
-    }
-
-    private FullTextEntityManager initializeFullTextEntityManager() {
-        this.fullTextEntityManager = Search.getFullTextEntityManager(this.entityManager);
-        try {
-            fullTextEntityManager.createIndexer().startAndWait();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return fullTextEntityManager;
     }
 }
