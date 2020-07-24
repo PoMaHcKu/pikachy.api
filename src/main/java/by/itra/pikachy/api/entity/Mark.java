@@ -1,9 +1,9 @@
 package by.itra.pikachy.api.entity;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "mark")
@@ -16,19 +16,13 @@ public class Mark {
     @Column(name = "mark")
     private int mark;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_mark",
-            joinColumns = @JoinColumn(name = "mark_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private Set<User> users;
+    @ToString.Exclude
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @ManyToMany
-    @JoinTable(
-            name = "post_mark",
-            joinColumns = @JoinColumn(name = "mark_id"),
-            inverseJoinColumns = @JoinColumn(name = "post_id")
-    )
-    private Set<Post> posts;
+    @ToString.Exclude
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
 }

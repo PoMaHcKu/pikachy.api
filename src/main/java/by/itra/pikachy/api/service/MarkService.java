@@ -1,22 +1,31 @@
 package by.itra.pikachy.api.service;
 
 import by.itra.pikachy.api.entity.Mark;
+import by.itra.pikachy.api.entity.Post;
+import by.itra.pikachy.api.entity.User;
 import by.itra.pikachy.api.repository.MarkRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.security.Principal;
 
 @Service
 @AllArgsConstructor
 public class MarkService {
     private final MarkRepository markRepository;
+    private final UserService userService;
+    private final PostService postService;
 
-    public Mark getMark(int mark) {
-        return markRepository.findByMark(mark);
+    public void rate(int mark, int postId, Principal principal) {
+        Post post = postService.getById(postId);
+        User user = userService.getAuthenticatedUser(principal);
+        Mark m = markRepository.findByPostAndUser(post, user);
+        if (m == null) {
+            m = new Mark();
+            m.setPost(post);
+            m.setUser(user);
+        }
+        m.setMark(mark);
+        markRepository.save(m);
     }
-
-    public Mark update(Mark mark) {
-        return markRepository.save(mark);
-    }
-
-
 }

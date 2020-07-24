@@ -17,5 +17,9 @@ public interface PostMapper {
     })
     PostDto toDto(Post post);
 
+    @Mappings({
+            @Mapping(target = "created", source = "created", ignore = true),
+            @Mapping(target = "updated", source = "updated", ignore = true)
+    })
     Post toEntity(PostDto postDto);
 }

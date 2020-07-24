@@ -62,16 +62,6 @@ public class Post {
     )
     private List<Tag> tags;
 
-    @ManyToMany
-    @ToString.Exclude
-    @JoinTable(
-            name = "post_mark",
-            joinColumns = {@JoinColumn(name = "post_id")},
-            inverseJoinColumns = {@JoinColumn(name = "mark_id")}
-    )
-    private List<Mark> marks;
-
-    @Formula("(select IFNULL(avg(m.mark), 0) from post_mark pm " +
-            "inner join mark m on pm.mark_id=m.id where pm.post_id=id)")
+    @Formula("(select IFNULL(avg(m.mark), 0) from mark m where m.post_id=id)")
     private double rating;
 }
