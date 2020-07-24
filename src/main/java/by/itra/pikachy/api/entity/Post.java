@@ -2,6 +2,7 @@ package by.itra.pikachy.api.entity;
 
 import lombok.Data;
 import lombok.ToString;
+import org.hibernate.annotations.Formula;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
@@ -60,4 +61,17 @@ public class Post {
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
     private List<Tag> tags;
+
+    @ManyToMany
+    @ToString.Exclude
+    @JoinTable(
+            name = "post_mark",
+            joinColumns = {@JoinColumn(name = "post_id")},
+            inverseJoinColumns = {@JoinColumn(name = "mark_id")}
+    )
+    private List<Mark> marks;
+
+    @Formula("(select IFNULL(avg(m.mark), 0) from post_mark pm " +
+            "inner join mark m on pm.mark_id=m.id where pm.post_id=id)")
+    private double rating;
 }

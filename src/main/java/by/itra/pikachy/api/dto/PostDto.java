@@ -13,6 +13,7 @@ public class PostDto {
     private String created;
     private String updated;
     private String genre;
+    private double rating;
     private Set<SectionDto> sections = new TreeSet<>(Comparator.comparing(SectionDto::getPlaceNumber));
     private List<CommentaryDto> commentaries = new ArrayList<>();
     private List<String> tags = new ArrayList<>();
