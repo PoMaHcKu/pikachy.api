@@ -2,6 +2,7 @@ package by.itra.pikachy.api.entity;
 
 import lombok.Data;
 import lombok.ToString;
+import org.hibernate.annotations.Formula;
 import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
@@ -46,4 +47,7 @@ public class Section {
             inverseJoinColumns = {@JoinColumn(name = "user_id")}
     )
     private Set<User> likes = new HashSet<>();
+
+    @Formula("(select count(l.user_id) from section_like l where l.section_id = id)")
+    private int countLike;
 }

@@ -15,7 +15,6 @@ import java.util.Set;
 @Mapper(componentModel = "spring")
 public interface SectionMapper {
 
-    @Mapping(source = "likes", target = "countLike")
     @Mapping(source = "likes", target = "liked")
     SectionDto fromSection(Section section);
 
@@ -29,10 +28,6 @@ public interface SectionMapper {
 
     default int toDto(Post entity) {
         return entity.getId();
-    }
-
-    default int getCountLike(Set<User> users) {
-        return users.size();
     }
 
     default boolean isLiked(Set<User> users) {
