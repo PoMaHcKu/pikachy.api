@@ -21,8 +21,8 @@ public class PostController {
     private final PostSearchService postSearch;
 
     @GetMapping("{id}")
-    public PostDto getPost(@PathVariable int id) {
-        return postService.getPost(id);
+    public PostDto getPost(@PathVariable int id, @AuthenticationPrincipal Principal user) {
+        return postService.getPost(id, user);
     }
 
     @GetMapping

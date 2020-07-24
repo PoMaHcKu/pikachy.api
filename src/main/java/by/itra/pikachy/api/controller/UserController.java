@@ -22,9 +22,4 @@ public class UserController {
                                       @RequestParam(required = false, defaultValue = "10") int size) {
         return userService.getPage(pageNumber, size);
     }
-
-    @DeleteMapping("{id}")
-    public void delete(@PathVariable int id) {
-        userService.deleteUser(id);
-    }
 }

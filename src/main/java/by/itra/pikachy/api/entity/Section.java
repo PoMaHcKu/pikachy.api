@@ -50,4 +50,7 @@ public class Section {
 
     @Formula("(select count(l.user_id) from section_like l where l.section_id = id)")
     private int countLike;
+
+    @Transient
+    private boolean isLiked;
 }

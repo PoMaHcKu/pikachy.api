@@ -4,6 +4,7 @@ import by.itra.pikachy.api.dto.PostDto;
 import by.itra.pikachy.api.entity.Genre;
 import by.itra.pikachy.api.entity.Post;
 import by.itra.pikachy.api.entity.Tag;
+import by.itra.pikachy.api.entity.User;
 import by.itra.pikachy.api.mapper.PostMapper;
 import by.itra.pikachy.api.repository.PostRepository;
 import by.itra.pikachy.api.util.GetDate;
@@ -50,8 +51,13 @@ public class PostService {
                 .map(postMapper::toDto);
     }
 
-    public PostDto getPost(int id) {
-        return postMapper.toDto(postRepository.getOne(id));
+    public PostDto getPost(int id, Principal principal) {
+        Post post = postRepository.getOne(id);
+        if (principal != null) {
+            User authenticatedUser = userService.getAuthenticatedUser(principal);
+            post.getSections().forEach(s -> s.setLiked(s.getLikes().contains(authenticatedUser)));
+        }
+        return postMapper.toDto(post);
     }
 
     public Page<PostDto> getByGenre(String genre, int page, int size, String sort) {
