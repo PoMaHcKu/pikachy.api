@@ -80,12 +80,4 @@ public class PostSearchService {
         FullTextQuery jpaQuery = manager.createFullTextQuery(query, Post.class, Section.class);
         return jpaQuery.getResultList();
     }
-
-    public void updateIndexes() {
-        try {
-            this.fullTextEntityManager.createIndexer().startAndWait();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 }
