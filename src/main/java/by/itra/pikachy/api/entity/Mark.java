@@ -3,7 +3,7 @@ package by.itra.pikachy.api.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "mark")
@@ -22,5 +22,13 @@ public class Mark {
             joinColumns = @JoinColumn(name = "mark_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private List<User> users;
+    private Set<User> users;
+
+    @ManyToMany
+    @JoinTable(
+            name = "post_mark",
+            joinColumns = @JoinColumn(name = "mark_id"),
+            inverseJoinColumns = @JoinColumn(name = "post_id")
+    )
+    private Set<Post> posts;
 }
