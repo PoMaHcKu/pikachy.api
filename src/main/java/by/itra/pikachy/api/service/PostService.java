@@ -47,7 +47,7 @@ public class PostService {
     }
 
     public Page<PostDto> getPosts(int page, int size, String sort) {
-        return postRepository.findAll(PageRequest.of(page, size, Sort.Direction.DESC, sort))
+        return postRepository.findAll(PageRequest.of(page, size, Sort.Direction.DESC, sort, "created"))
                 .map(postMapper::toDto);
     }
 
