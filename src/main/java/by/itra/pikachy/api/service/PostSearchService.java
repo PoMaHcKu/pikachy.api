@@ -32,16 +32,23 @@ public class PostSearchService {
 
     @PostConstruct
     public void createdIndexes() {
-        fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+        this.fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
         try {
-            fullTextEntityManager.createIndexer().startAndWait();
+            this.fullTextEntityManager.createIndexer().startAndWait();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
+    public FullTextEntityManager getFullTextEntityManager() {
+        if (fullTextEntityManager == null) {
+            fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+        }
+        return fullTextEntityManager;
+    }
+
     public List<PostDto> search(String text) {
-        QueryBuilder builder = fullTextEntityManager
+        QueryBuilder builder = getFullTextEntityManager()
                 .getSearchFactory()
                 .buildQueryBuilder()
                 .forEntity(Post.class)
