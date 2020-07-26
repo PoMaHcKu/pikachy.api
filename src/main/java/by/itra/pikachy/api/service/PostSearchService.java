@@ -13,6 +13,7 @@ import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
@@ -29,15 +30,18 @@ public class PostSearchService {
     private EntityManager entityManager;
     private FullTextEntityManager fullTextEntityManager;
 
-    public FullTextEntityManager getFullTextEntityManager() {
-        if (fullTextEntityManager == null) {
-            fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+    @PostConstruct
+    public void createdIndexes() {
+        fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+        try {
+            fullTextEntityManager.createIndexer().startAndWait();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        return fullTextEntityManager;
     }
 
     public List<PostDto> search(String text) {
-        QueryBuilder builder = getFullTextEntityManager()
+        QueryBuilder builder = fullTextEntityManager
                 .getSearchFactory()
                 .buildQueryBuilder()
                 .forEntity(Post.class)
