@@ -19,7 +19,7 @@ public class TagService {
 
     public List<Tag> saveAll(List<Tag> tags) {
         return tags.stream().map(tag -> {
-            tag.setTagName(tag.getTagName().toLowerCase());
+            toLowerCaseAndTrim(tag);
             Tag fromDB = tagRepository.findByTagName(tag.getTagName());
             if (fromDB == null) {
                 return tagRepository.save(tag);
@@ -29,7 +29,7 @@ public class TagService {
     }
 
     public List<String> getCountTags(int count) {
-        return tagRepository.countBy(count).stream().map(tagMapper::toDto).collect(Collectors.toList());
+        return tagRepository.getCount(count).stream().map(tagMapper::toDto).collect(Collectors.toList());
     }
 
     public List<String> getAllTags(int page) {
@@ -41,5 +41,10 @@ public class TagService {
 
     public Tag getByTagName(String tagName) {
         return tagRepository.findByTagName(tagName);
+    }
+
+    private void toLowerCaseAndTrim(Tag tag) {
+        tag.setTagName(tag.getTagName().toLowerCase().trim());
+
     }
 }
