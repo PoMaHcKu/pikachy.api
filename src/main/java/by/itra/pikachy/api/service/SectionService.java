@@ -16,6 +16,10 @@ public class SectionService {
     private final SectionMapper sectionMapper;
     private final UserService userService;
 
+    public SectionDto getSection(int id) {
+        return sectionMapper.fromSection(sectionRepository.getOne(id));
+    }
+
     public SectionDto like(int sectionId, Principal principal) {
         Section section = sectionRepository.getOne(sectionId);
         section.getLikes().add(userService.getAuthenticatedUser(principal));

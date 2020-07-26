@@ -14,6 +14,11 @@ import java.security.Principal;
 public class SectionController {
     private final SectionService sectionService;
 
+    @GetMapping
+    public SectionDto getSection(@RequestParam int id) {
+        return sectionService.getSection(id);
+    }
+
     @GetMapping("{id}")
     public SectionDto like(@PathVariable int id, @AuthenticationPrincipal Principal principal) {
         return sectionService.like(id, principal);
