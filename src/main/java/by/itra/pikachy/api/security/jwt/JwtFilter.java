@@ -1,11 +1,8 @@
 package by.itra.pikachy.api.security.jwt;
 
-import by.itra.pikachy.api.security.UserDetailsImpl;
-import by.itra.pikachy.api.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -15,35 +12,20 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-import static org.springframework.util.StringUtils.hasText;
-
-@Component
 @RequiredArgsConstructor
 public class JwtFilter extends GenericFilterBean {
 
-    public static final String AUTHORIZATION = "Authorization";
-    private JwtProvider jwtProvider;
-    private UserDetailsServiceImpl userDetailsService;
+    private final JwtProvider jwtProvider;
 
     @Override
     public void doFilter(ServletRequest servletRequest,
                          ServletResponse servletResponse,
                          FilterChain filterChain) throws IOException, ServletException {
-        String token = getTokenFromRequest((HttpServletRequest) servletRequest);
+        String token = jwtProvider.resolveToken((HttpServletRequest) servletRequest);
         if (token != null && jwtProvider.validateToken(token)) {
-            String username = jwtProvider.getUsernameFromToken(token);
-            UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(username);
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getRoles());
-            SecurityContextHolder.getContext().setAuthentication(auth);
+            Authentication authentication = jwtProvider.getAuthentication(token);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(servletRequest, servletResponse);
-    }
-
-    private String getTokenFromRequest(HttpServletRequest request) {
-        String bearer = request.getHeader(AUTHORIZATION);
-        if (hasText(bearer) && bearer.startsWith("Bearer ")) {
-            return bearer.substring(7);
-        }
-        return null;
     }
 }
