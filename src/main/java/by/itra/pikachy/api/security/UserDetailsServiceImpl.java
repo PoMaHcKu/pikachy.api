@@ -3,17 +3,21 @@ package by.itra.pikachy.api.security;
 import by.itra.pikachy.api.entity.User;
 import by.itra.pikachy.api.service.UserService;
 import by.itra.pikachy.api.util.GetDate;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserService userService;
+    private UserService userService;
+
+    @Autowired
+    public void setUserService(UserService service) {
+        this.userService = service;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
