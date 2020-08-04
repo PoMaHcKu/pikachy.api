@@ -21,12 +21,8 @@ import java.util.Collections;
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private JwtProvider jwtProvider;
-
     @Autowired
-    public void setJwtProvider(JwtProvider provider) {
-        this.jwtProvider = provider;
-    }
+    private JwtProvider jwtProvider;
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
