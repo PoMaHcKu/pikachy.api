@@ -4,7 +4,7 @@ import by.itra.pikachy.api.entity.Role;
 import by.itra.pikachy.api.exception.JwtAuthenticationException;
 import by.itra.pikachy.api.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,11 +17,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-@RequiredArgsConstructor
 public class JwtProvider {
 
-    public static final String AUTHORIZATION = "Authorization";
-    private final UserDetailsServiceImpl userDetailsService;
+    public static final String AUTHORIZATION_HEADER = "Authorization";
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
     @Value("${jwt.secret}")
     private String jwtSecret;
     @Value("${jwt.expired}")
@@ -46,7 +46,7 @@ public class JwtProvider {
     }
 
     public String resolveToken(HttpServletRequest request) {
-        String token = request.getHeader(AUTHORIZATION);
+        String token = request.getHeader(AUTHORIZATION_HEADER);
         if (token != null && token.startsWith("Bearer")) {
             return token.substring(7);
         }
