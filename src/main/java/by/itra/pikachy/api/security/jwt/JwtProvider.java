@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Component
 public class JwtProvider {
 
-    public static final String AUTHORIZATION_HEADER = "Authorization";
+    public static final String AUTHORIZATION = "Authorization";
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
     @Value("${jwt.secret}")
@@ -46,7 +46,7 @@ public class JwtProvider {
     }
 
     public String resolveToken(HttpServletRequest request) {
-        String token = request.getHeader(AUTHORIZATION_HEADER);
+        String token = request.getHeader(AUTHORIZATION);
         if (token != null && token.startsWith("Bearer")) {
             return token.substring(7);
         }
