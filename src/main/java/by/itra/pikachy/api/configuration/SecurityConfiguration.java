@@ -35,10 +35,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .httpBasic().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+                .and().cors().and()
                 .authorizeRequests()
                 .mvcMatchers(HttpMethod.GET, "/post/**", "/commentary/**", "/user/**",
-                        "/chat/commentaries/**", "/commentary-messaging/**", "/auth-me/**",
+                        "/chat/commentaries/**", "/commentary-messaging/**", "/app/commentary/**", "/auth-me/**",
                         "/genre", "/tag").permitAll()
                 .mvcMatchers("/login", "/registration/**", "/search").permitAll()
                 .mvcMatchers("/admin/**").hasAnyRole("ADMIN")

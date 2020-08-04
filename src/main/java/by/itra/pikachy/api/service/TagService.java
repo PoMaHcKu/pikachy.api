@@ -33,7 +33,7 @@ public class TagService {
     }
 
     public List<String> getAllTags(int page) {
-        return tagRepository.findAll(PageRequest.of(page, 50, Sort.Direction.ASC, "tag_name"))
+        return tagRepository.findAll(PageRequest.of(page, 50, Sort.Direction.ASC, "tagName"))
                 .stream()
                 .map(Tag::getTagName)
                 .collect(Collectors.toList());
@@ -45,6 +45,5 @@ public class TagService {
 
     private void toLowerCaseAndTrim(Tag tag) {
         tag.setTagName(tag.getTagName().toLowerCase().trim());
-
     }
 }

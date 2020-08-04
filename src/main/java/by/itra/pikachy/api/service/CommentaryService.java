@@ -21,14 +21,14 @@ import java.security.Principal;
 public class CommentaryService {
     private final CommentaryRepository commentaryRepository;
     private final CommentaryMapper commentaryMapper;
-    private final UserService userService;
+    private final AuthenticationService authenticationService;
     private final PostService postService;
 
     @Transactional
     public CommentaryDto create(CommentaryDto commentaryDto, Principal user) {
         Commentary commentary = commentaryMapper.toEntity(commentaryDto);
         commentary.setCreated(GetDate.getLocalDate());
-        commentary.setUser(userService.getAuthenticatedUser(user));
+        commentary.setUser(authenticationService.getAuthenticatedUser(user));
         Post post = postService.getById(commentary.getPost().getId());
         post.getCommentaries().add(commentary);
         commentary.setPost(post);

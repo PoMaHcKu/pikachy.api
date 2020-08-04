@@ -14,7 +14,7 @@ import java.security.Principal;
 public class SectionService {
     private final SectionRepository sectionRepository;
     private final SectionMapper sectionMapper;
-    private final UserService userService;
+    private final AuthenticationService authenticationService;
 
     public SectionDto getSection(int id) {
         return sectionMapper.fromSection(sectionRepository.getOne(id));
@@ -22,13 +22,13 @@ public class SectionService {
 
     public SectionDto like(int sectionId, Principal principal) {
         Section section = sectionRepository.getOne(sectionId);
-        section.getLikes().add(userService.getAuthenticatedUser(principal));
+        section.getLikes().add(authenticationService.getAuthenticatedUser(principal));
         return sectionMapper.fromSection(sectionRepository.save(section));
     }
 
     public SectionDto dislike(int sectionId, Principal principal) {
         Section section = sectionRepository.getOne(sectionId);
-        section.getLikes().remove(userService.getAuthenticatedUser(principal));
+        section.getLikes().remove(authenticationService.getAuthenticatedUser(principal));
         return sectionMapper.fromSection(sectionRepository.save(section));
     }
 }

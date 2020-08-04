@@ -13,12 +13,12 @@ import java.security.Principal;
 @AllArgsConstructor
 public class MarkService {
     private final MarkRepository markRepository;
-    private final UserService userService;
+    private final AuthenticationService authenticationService;
     private final PostService postService;
 
     public void rate(int mark, int postId, Principal principal) {
         Post post = postService.getById(postId);
-        User user = userService.getAuthenticatedUser(principal);
+        User user = authenticationService.getAuthenticatedUser(principal);
         Mark m = markRepository.findByPostAndUser(post, user);
         if (m == null) {
             m = new Mark();

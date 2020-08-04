@@ -24,14 +24,14 @@ import java.util.List;
 public class PostService {
     private final PostRepository postRepository;
     private final PostMapper postMapper;
-    private final UserService userService;
+    private final AuthenticationService authenticationService;
     private final GenreService genreService;
     private final TagService tagService;
 
     @Transactional
     public PostDto create(PostDto postDto, Principal user) {
         Post post = postMapper.toEntity(postDto);
-        post.setAuthor(userService.getAuthenticatedUser(user));
+        post.setAuthor(authenticationService.getAuthenticatedUser(user));
         preparePostFields(post);
         return postMapper.toDto(postRepository.save(post));
     }
@@ -54,7 +54,7 @@ public class PostService {
     public PostDto getPost(int id, Principal principal) {
         Post post = postRepository.getOne(id);
         if (principal != null) {
-            User authenticatedUser = userService.getAuthenticatedUser(principal);
+            User authenticatedUser = authenticationService.getAuthenticatedUser(principal);
             post.getSections().forEach(s -> s.setLiked(s.getLikes().contains(authenticatedUser)));
         }
         return postMapper.toDto(post);

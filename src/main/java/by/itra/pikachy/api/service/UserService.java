@@ -12,15 +12,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.security.Principal;
-import java.security.SecureRandom;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
@@ -28,23 +27,15 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
     private final UserMapper userMapper;
-    private final String USER_ROLE = "ROLE_USER";
+    private RegistrationService registrationService;
     @Value("${mail.text}")
     private String textMessage;
     @Value("${app.address}")
     private String appAddress;
 
     @Autowired
-    public UserService(UserRepository userRepository,
-                       RoleRepository roleRepository,
-                       PasswordEncoder passwordEncoder,
-                       EmailService emailService,
-                       UserMapper userMapper) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.emailService = emailService;
-        this.userMapper = userMapper;
+    public void setRegistrationService(RegistrationService registrationService) {
+        this.registrationService = registrationService;
     }
 
     public User findByUsername(String username) {
@@ -53,23 +44,17 @@ public class UserService {
 
     @Transactional
     public UserDto created(User user) {
+        String USER_ROLE = "ROLE_USER";
         user.getRoles().add(roleRepository.findByRoleName(USER_ROLE));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setVerificationToken(generateToken());
+        user.setVerificationToken(registrationService.generateToken());
         sendTokenOnEmail(userRepository.save(user));
         user.setCreated(GetDate.getLocalDate());
         return userMapper.toDto(userRepository.save(user));
     }
 
-    @Transactional
-    public UserDto verifyAndCleanToken(String token) {
-        User user = userRepository.findByVerificationToken(token);
-        if (user == null) {
-            throw new RuntimeException("Token: " + token + " not found.");
-        }
-        user.setEnabled(true);
-        user.setVerificationToken("");
-        return userMapper.toDto(userRepository.save(user));
+    public User getByVerificationToken(String token) {
+        return userRepository.findByVerificationToken(token);
     }
 
     @Transactional
@@ -77,25 +62,8 @@ public class UserService {
         return userMapper.toDto(userRepository.getOne(userId));
     }
 
-    public void deleteUser(int id) {
-        userRepository.deleteById(id);
-    }
-
-    private String generateToken() {
-        byte[] bytes = new SecureRandom().generateSeed(16);
-        return bytesToHex(bytes);
-    }
-
-    public UserDto signIn(@AuthenticationPrincipal Principal user) {
-        return user != null ? userMapper.toDto(getAuthenticatedUser(user)) : null;
-    }
-
-    public User getAuthenticatedUser(Principal user) {
-        return userRepository.findByUsername(user.getName());
-    }
-
-    public void update(User user) {
-        userRepository.save(user);
+    public User update(User user) {
+        return userRepository.save(user);
     }
 
     public Page<UserDto> getPage(int numberPage, int size) {
@@ -103,15 +71,6 @@ public class UserService {
                 Sort.Order.desc("created"),
                 Sort.Order.asc("username")));
         return userRepository.findAll(pageable).map(userMapper::toDto);
-
-    }
-
-    private String bytesToHex(byte[] bytes) {
-        StringBuilder hexString = new StringBuilder();
-        for (byte b : bytes) {
-            hexString.append(Integer.toHexString(0xFF & b));
-        }
-        return hexString.toString();
     }
 
     private String getTextMessage(String token) {
