@@ -6,6 +6,7 @@ import by.itra.pikachy.api.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +21,6 @@ import java.util.stream.Collectors;
 public class JwtProvider {
 
     public static final String AUTHORIZATION = "Authorization";
-    @Autowired
     private UserDetailsServiceImpl userDetailsService;
     @Value("${jwt.secret}")
     private String jwtSecret;
@@ -68,5 +68,10 @@ public class JwtProvider {
 
     private List<String> getRoleNames(List<Role> roles) {
         return roles.stream().map(Role::getRoleName).collect(Collectors.toList());
+    }
+
+    @Autowired
+    public void setUserDetailsService(@Lazy UserDetailsServiceImpl userDetailsService) {
+        this.userDetailsService = userDetailsService;
     }
 }
