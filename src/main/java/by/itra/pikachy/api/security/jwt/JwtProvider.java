@@ -13,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -52,7 +53,7 @@ public class JwtProvider {
         claims.put("userAgent", userAgent);
         claims.put("roles", getRoleNames(roles));
         Date now = new Date();
-        Date validity = new Date(now.getTime() + 1000000L);
+        Date validity = new Date(now.getTime() + expired * 60);
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
@@ -78,6 +79,7 @@ public class JwtProvider {
         }
     }
 
+    @Transactional
     public boolean validateRefreshToken(String token) {
         UserDetailsImpl credentials = userDetailsService.loadUserByUsername(getUsername(token));
         try {
