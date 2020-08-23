@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -32,7 +33,12 @@ public class RegistrationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDto> login(@RequestBody AuthRequestDto authDto) {
-        return authService.login(authDto);
+    public ResponseEntity<AuthResponseDto> login(@RequestBody AuthRequestDto authDto, HttpServletRequest request) {
+        return authService.login(authDto, request);
+    }
+
+    @GetMapping("/login/refresh")
+    public ResponseEntity<AuthResponseDto> refreshLogin(HttpServletRequest request) {
+        return authService.refreshToken(request);
     }
 }

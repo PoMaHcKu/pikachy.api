@@ -1,5 +1,6 @@
 package by.itra.pikachy.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -43,7 +44,7 @@ public class User {
     private boolean enabled;
 
     @OneToMany(mappedBy = "author")
-    private List<Post> posts  = new ArrayList<>();
+    private List<Post> posts = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -55,4 +56,8 @@ public class User {
 
     @Column(name = "token")
     private String verificationToken;
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<AdditionalCredentials> additionalCredentials = new ArrayList<>();
 }

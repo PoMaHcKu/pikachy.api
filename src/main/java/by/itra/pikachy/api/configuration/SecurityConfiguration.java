@@ -44,11 +44,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .mvcMatchers(HttpMethod.GET, "/post/**", "/commentary/**", "/user/**",
                         "/commentary-messaging/**", "/genre", "/tag").permitAll()
-                .mvcMatchers("/login", "/registration/**", "/search").permitAll()
+                .mvcMatchers("/login/**", "/registration/**", "/search").permitAll()
                 .mvcMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().apply(new JwtConfiguration(jwtProvider));
-
     }
 
     @Bean

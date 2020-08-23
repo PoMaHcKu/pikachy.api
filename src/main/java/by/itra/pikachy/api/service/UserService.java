@@ -6,13 +6,13 @@ import by.itra.pikachy.api.mapper.UserMapper;
 import by.itra.pikachy.api.repository.RoleRepository;
 import by.itra.pikachy.api.repository.UserRepository;
 import by.itra.pikachy.api.util.GetDate;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

@@ -1,5 +1,6 @@
 package by.itra.pikachy.api.security;
 
+import by.itra.pikachy.api.entity.AdditionalCredentials;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ public class UserDetailsImpl implements UserDetails {
     private String username;
     private String password;
     private List<GrantedAuthority> roles;
+    private List<AdditionalCredentials> credentials;
     private boolean enabled;
 
     @Override
@@ -77,5 +79,13 @@ public class UserDetailsImpl implements UserDetails {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public List<AdditionalCredentials> getCredentials() {
+        return credentials;
+    }
+
+    public void setCredentials(List<AdditionalCredentials> credentials) {
+        this.credentials = credentials;
     }
 }

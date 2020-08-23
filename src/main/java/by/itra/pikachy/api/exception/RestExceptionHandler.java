@@ -1,5 +1,6 @@
 package by.itra.pikachy.api.exception;
 
+import io.jsonwebtoken.JwtException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -92,6 +93,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleNotFound(EmptyResultDataAccessException ex) {
         ApiError apiError = new ApiError(HttpStatus.NO_CONTENT, ex.getMessage(), ex.getLocalizedMessage());
         return new ResponseEntity<>(apiError, apiError.getStatus());
+    }
+
+    @ExceptionHandler(value = {JwtException.class})
+    public ResponseEntity<Object> handleJwtException(JwtException ex) {
+        ApiError error = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage(), ex.getLocalizedMessage());
+        return new ResponseEntity<>(error, error.getStatus());
     }
 
     @ExceptionHandler(value = {Exception.class})
