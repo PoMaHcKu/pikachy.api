@@ -21,6 +21,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class PostService {
     private final PostRepository postRepository;
     private final PostMapper postMapper;
@@ -28,7 +29,7 @@ public class PostService {
     private final GenreService genreService;
     private final TagService tagService;
 
-    @Transactional
+
     public PostDto create(PostDto postDto, Principal user) {
         Post post = postMapper.toEntity(postDto);
         post.setAuthor(authenticationService.getAuthenticatedUser(user));
