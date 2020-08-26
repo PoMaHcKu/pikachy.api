@@ -4,7 +4,6 @@ import by.itra.pikachy.api.entity.AdditionalCredentials;
 import by.itra.pikachy.api.repository.AdditionalCredentialsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -29,7 +28,6 @@ public class AdditionalCredentialsService {
         return credentialsRepository.save(fromDb);
     }
 
-    @Transactional
     public List<AdditionalCredentials> getExpiredCredentials(Date expiration) {
         return credentialsRepository.findAllByExpirationBefore(expiration);
     }
